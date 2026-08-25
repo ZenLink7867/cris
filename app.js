@@ -33,7 +33,7 @@ function fazerLogin() {
   btn.disabled = true;
 
   // Mascara o e-mail por trás dos panos
-  const emailCompleto = `crisordem+${usuarioInput}@gmail.com`;
+  const emailCompleto = `zensites7867+${usuarioInput}@gmail.com`;
 
   auth.signInWithEmailAndPassword(emailCompleto, senhaInput)
     .then((userCredential) => {
