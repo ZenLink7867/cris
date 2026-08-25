@@ -14,12 +14,12 @@
             --cris-border: #1b3d29;
         }
 
-        /* Ponteiro Personalizado Verde Neon Pixelizado (SVG inline nativo) */
+        /* Oculta o cursor nativo */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" shape-rendering="crispEdges"><path fill="%2300ff66" stroke="%23000" stroke-width="1" d="M0 0v16l4-4 3 7 3-1-3-7 6 0z"/></svg>'), auto !important;
+            cursor: none !important;
         }
 
         body {
@@ -34,7 +34,47 @@
             position: relative;
         }
 
-        /* Efeito CRT - Textura de Linhas na Tela Inteira */
+        /* --- CURSOR GLITCH RETRÔ --- */
+        #glitch-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 26px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(0, 0);
+        }
+
+        /* Desenho do cursor pixelizado com falhas/pixels faltando */
+        .cursor-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 4px var(--cris-green));
+            animation: cursorGlitch 4s infinite ease-in-out;
+        }
+
+        @keyframes cursorGlitch {
+            0%, 92%, 100% {
+                transform: translate(0, 0);
+                filter: drop-shadow(0 0 4px var(--cris-green));
+            }
+            93% {
+                transform: translate(-2px, 1px);
+                filter: drop-shadow(-3px 0 #ff0055) drop-shadow(3px 0 #00ffff);
+            }
+            95% {
+                transform: translate(2px, -1px) scaleY(0.8);
+                opacity: 0.6;
+            }
+            97% {
+                transform: translate(-1px, 0);
+                filter: drop-shadow(0 0 6px var(--cris-green));
+                opacity: 1;
+            }
+        }
+
+        /* Efeito CRT - Linhas estáticas de fundo */
         body::before {
             content: " ";
             display: block;
@@ -56,7 +96,7 @@
             z-index: 5;
         }
 
-        /* Terminal Container com Glitch e Textura em Rolagem Infinita */
+        /* TERMINAL CONTAINER */
         .terminal-container {
             width: 420px;
             background: var(--cris-panel);
@@ -66,12 +106,9 @@
             z-index: 2;
             position: relative;
             overflow: hidden;
-
-            /* Animação de Glitch no Contêiner */
-            animation: periodicGlitch 6s infinite ease-in-out;
         }
 
-        /* Overlay de Textura Deslizante (Rolagem Infinita dos Pixels/Linhas) */
+        /* Overlay de Textura em Rolagem Infinita (Loop contínuo das linhas) */
         .terminal-container::before {
             content: "";
             position: absolute;
@@ -86,41 +123,51 @@
             background-size: 100% 8px;
             pointer-events: none;
             z-index: 8;
-
-            /* Loop Infinito Deslocando a Textura de Baixo para Cima */
             animation: scrollTexture 1.5s linear infinite;
         }
 
-        /* Animação: Rolagem Contínua de Textura Holográfica */
         @keyframes scrollTexture {
-            0% {
-                background-position-y: 0px;
-            }
-            100% {
-                background-position-y: 32px; /* Múltiplo do tamanho do gradiente */
-            }
+            0% { background-position-y: 0px; }
+            100% { background-position-y: 32px; }
         }
 
-        /* Animação: Glitch Periódico de Sinal */
-        @keyframes periodicGlitch {
-            0%, 93%, 100% {
-                transform: translate(0, 0) skew(0deg);
+        /* --- GLITCH ESTILO VHS (Fatiamento de estática sem mover a caixa) --- */
+        .terminal-container::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: inherit;
+            border: inherit;
+            pointer-events: none;
+            z-index: 9;
+            opacity: 0;
+        }
+
+        .terminal-container {
+            animation: vhsGlitch 7s infinite ease-in-out;
+        }
+
+        @keyframes vhsGlitch {
+            0%, 91%, 100% {
+                box-shadow: 0 0 25px var(--cris-glow), inset 0 0 15px rgba(0,255,102,0.1);
                 filter: none;
+            }
+            92% {
+                /* Aberração Cromática VHS (RGB Split) */
+                filter: drop-shadow(-3px 0 0 rgba(255, 0, 80, 0.7)) drop-shadow(3px 0 0 rgba(0, 255, 255, 0.7));
+                clip-path: inset(20% 0 60% 0);
+            }
+            93% {
+                clip-path: inset(55% 0 10% 0);
+                filter: drop-shadow(4px 0 0 rgba(255, 0, 80, 0.8));
             }
             94% {
-                transform: translate(-3px, 1px) skew(-1deg);
-                filter: drop-shadow(2px -2px 0px rgba(0, 255, 102, 0.8));
+                clip-path: inset(80% 0 5% 0);
+                filter: drop-shadow(-2px 0 0 rgba(0, 255, 255, 0.8));
             }
             95% {
-                transform: translate(3px, -2px) skew(1.5deg);
-                filter: drop-shadow(-2px 2px 0px rgba(255, 0, 80, 0.5));
-            }
-            96% {
-                transform: translate(-1px, 2px) skew(-0.5deg);
+                clip-path: none;
                 filter: none;
-            }
-            97% {
-                transform: translate(0, 0) skew(0deg);
             }
         }
 
@@ -242,6 +289,31 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+    <!-- ELEMENTO DO CURSOR CUSTOMIZADO COM GLITCH -->
+    <div id="glitch-cursor">
+        <svg class="cursor-svg" viewBox="0 0 20 26" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+            <!-- Seta retro pixelizada com falhas/pixels vazios intencionais -->
+            <path fill="#00ff66" d="
+                M 0 0 H 2 V 2 H 0 Z
+                M 0 2 H 4 V 4 H 0 Z
+                M 0 4 H 2 V 6 H 4 V 6 H 6 Z
+                M 0 6 H 8 V 8 H 0 Z
+                M 0 8 H 6 V 10 H 10 Z
+                M 0 10 H 4 V 12 H 8 V 12 H 12 Z
+                M 0 12 H 14 V 14 H 0 Z
+                M 0 14 H 6 V 16 H 10 V 16 H 16 Z
+                M 0 16 H 12 V 18 H 0 Z
+                M 0 18 H 4 V 20 H 8 V 20 H 10 Z
+                M 0 20 H 2 V 22 H 6 Z
+                M 0 22 H 4 V 24 Z
+                M 4 18 H 6 V 26 H 4 Z
+            "/>
+            <!-- Pixel solto/deslocado para dar impressão de artefato de sinal -->
+            <rect x="16" y="4" width="2" height="2" fill="#00ff66" opacity="0.8"/>
+            <rect x="18" y="18" width="2" height="2" fill="#00ff66" opacity="0.5"/>
+        </svg>
+    </div>
+
     <div class="vignette"></div>
 
     <div class="terminal-container">
@@ -277,5 +349,13 @@
     </div>
 
     <script src="app.js"></script>
+
+    <!-- Script leve para o cursor customizado acompanhar o ponteiro -->
+    <script>
+        const cursor = document.getElementById('glitch-cursor');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+    </script>
 </body>
 </html>
