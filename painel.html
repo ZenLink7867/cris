@@ -3,16 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. - TERMINAL PRINCIPAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>C.R.I.S. - PAINEL OPERACIONAL</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
+
+    /* Importação de Fonte Local (Se você tiver os arquivos na pasta 'fonts/') */
+        @font-face {
+            font-family: 'Adobe Hebrew';
+            src: url('fonts/AdobeHebrew-Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Times New Roman';
+            src: local('Times New Roman'), local('TimesNewRomanPSMT');
+        }
+
         :root {
-            --cris-green: #00ff66;
-            --cris-glow: rgba(0, 255, 102, 0.4);
-            --cris-dark: #080d0a;
-            --cris-panel: #0d1712;
-            --cris-border: #1b3d29;
-            --cris-alert: #ff3333;
+            --bg-main: #0a0b0d;
+            --bg-panel: #111318;
+            --bg-card: #161920;
+            --border-color: #242936;
+            --text-primary: #e1e6ed;
+            --text-secondary: #8b95a5;
+            --accent-gold: #c9a054;
+            --accent-red: #d93838;
+            --accent-cyan: #29b6f6;
+            
+            /* Fontes */
+            --font-body: 'Inter', sans-serif;
+            --font-heading: 'Crimson Pro', 'Adobe Hebrew', serif;
+            --font-typewriter: 'Special Elite', monospace;
         }
 
         * {
@@ -22,159 +47,193 @@
         }
 
         body {
-            background-color: var(--cris-dark);
-            color: var(--cris-green);
-            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-body);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
         }
 
-        /* Efeito CRT Screen */
-        body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 10;
-            background-size: 100% 3px, 6px 100%;
-            pointer-events: none;
-        }
-
-        /* Topbar estilo C.R.I.S. */
+        /* Topbar Moderna */
         header {
-            background: var(--cris-panel);
-            border-bottom: 2px solid var(--cris-green);
-            padding: 15px 25px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 0 15px var(--cris-glow);
-            z-index: 2;
         }
 
-        .system-title {
-            font-size: 1.3rem;
-            letter-spacing: 2px;
+        .system-branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .system-logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
         }
 
         .agent-info {
             display: flex;
             align-items: center;
             gap: 20px;
+            font-size: 0.9rem;
         }
 
         .btn-logout {
             background: transparent;
-            border: 1px solid var(--cris-alert);
-            color: var(--cris-alert);
-            padding: 5px 12px;
-            font-family: inherit;
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 6px 14px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .btn-logout:hover {
-            background: var(--cris-alert);
-            color: #000;
+            background: var(--accent-red);
+            color: #fff;
         }
 
-        /* Layout em colunas parecendo o monitor do Samuel */
+        /* Layout Principal */
         .main-container {
             display: flex;
             flex: 1;
-            padding: 20px;
-            gap: 20px;
-            z-index: 2;
+            padding: 25px;
+            gap: 25px;
         }
 
+        /* Sidebar Navegação */
         .sidebar {
-            width: 280px;
-            background: var(--cris-panel);
-            border: 1px solid var(--cris-border);
+            width: 260px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .agent-card {
-            border: 1px solid var(--cris-green);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             padding: 15px;
-            background: rgba(0, 255, 102, 0.03);
             text-align: center;
         }
 
         .agent-avatar {
-            width: 100px;
-            height: 100px;
-            border: 2px solid var(--cris-green);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
             margin: 0 auto 10px;
-            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
+            background: #000;
         }
 
-        .nav-menu button {
-            width: 100%;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--cris-border);
-            color: var(--cris-green);
-            padding: 12px;
+        .clearance-tag {
+            display: inline-block;
+            background: rgba(201, 160, 84, 0.15);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 12px 15px;
             text-align: left;
-            font-family: inherit;
-            margin-bottom: 8px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .nav-menu button:hover, .nav-menu button.active {
-            background: rgba(0, 255, 102, 0.15);
-            border-color: var(--cris-green);
-            box-shadow: 0 0 10px var(--cris-glow);
+        .nav-btn:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
+        .nav-btn.active {
+            background: var(--bg-card);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* Área de Conteúdo */
         .content-area {
             flex: 1;
-            background: var(--cris-panel);
-            border: 1px solid var(--cris-border);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 30px;
         }
 
-        .section-header {
-            border-bottom: 1px solid var(--cris-green);
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--accent-gold);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
             margin-bottom: 20px;
-            font-size: 1.2rem;
         }
 
-        .doc-box {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px dashed var(--cris-border);
-            padding: 15px;
+        /* Cartões de Conteúdo */
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
             margin-bottom: 15px;
         }
 
-        .doc-box h3 {
-            color: #fff;
-            margin-bottom: 5px;
+        .info-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
-        .clearance-badge {
-            display: inline-block;
-            background: #ffaa00;
-            color: #000;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .typewriter-text {
+            font-family: var(--font-typewriter);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
     </style>
 
@@ -185,56 +244,119 @@
 <body>
 
     <header>
-        <div class="system-title">C.R.I.S. // BANCO DE DADOS DA ORDEM</div>
+        <div class="system-branding">
+            <span class="system-logo">C.R.I.S.</span>
+            <span style="color: var(--text-secondary); font-size: 0.85rem;">| CENTRAL DE RECONHECIMENTO E INTELIGÊNCIA</span>
+        </div>
         <div class="agent-info">
-            <span>AGENTE: <strong id="nome-agente">CARREGANDO...</strong></span>
+            <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-gold);">CARREGANDO...</strong></span>
             <button class="btn-logout" onclick="fazerLogout()">DESCONECTAR</button>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- Sidebar Esquerda -->
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="agent-card">
-                <div class="agent-avatar">👤</div>
-                <h3 id="card-agente-nome">AGENTE</h3>
-                <span class="clearance-badge">ACESSO NÍVEL 1</span>
-                <p style="font-size: 0.8rem; color: #7baf92; margin-top: 5px;">STATUS: ATIVO</p>
+                <div class="agent-avatar">🕵️</div>
+                <h3 id="card-agente-nome" style="font-family: var(--font-heading);">AGENTE</h3>
+                <span class="clearance-tag">NÍVEL DE ACESSO: I</span>
             </div>
 
             <div class="nav-menu">
-                <button class="active">> 📄 ARQUIVOS CONFIDENCIAIS</button>
-                <button>> 🕵️ REGISTRO DE MISSÕES</button>
-                <button>> ☣️ CASOS PARANORMAIS</button>
-                <button>> 📻 INTERCEPTAÇÕES DE ÁUDIO</button>
+                <button class="nav-btn active" onclick="trocarAba('home', this)">⚙️ CENTRAL C.R.I.S.</button>
+                <button class="nav-btn" onclick="trocarAba('documentos', this)">📄 DOCUMENTOS</button>
+                <button class="nav-btn" onclick="trocarAba('mural', this)">📌 MURAL DA ORDEM</button>
+                <button class="nav-btn" onclick="trocarAba('bestiario', this)">☣️ BESTIÁRIO</button>
+                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">🎒 EQUIPAMENTOS</button>
             </div>
         </div>
 
-        <!-- Área Principal de Conteúdo -->
+        <!-- Área Central -->
         <div class="content-area">
-            <div class="section-header">// ARQUIVOS CONFIDENCIAIS DA MISSÃO</div>
-
-            <div class="doc-box">
-                <span class="clearance-badge" style="background: var(--cris-green);">DOCUMENTO #001</span>
-                <h3>RELATÓRIO DE RECONHECIMENTO INICIAL</h3>
-                <p style="font-size: 0.9rem; color: #a4c7b3;">
-                    Pistas encontradas na região indicam variação de membrana abaixo de 1.2. Atividade paranormal detectada. Recomenda-se cautela aos agentes em campo.
-                </p>
+            
+            <!-- Aba 1: Home/Visão Geral -->
+            <div id="home" class="tab-content active">
+                <h2 class="section-title">CENTRAL DE OPERAÇÕES C.R.I.S.</h2>
+                <div class="info-card">
+                    <h3>SOBRE O SISTEMA</h3>
+                    <p class="typewriter-text">
+                        A C.R.I.S. (Central de Reconhecimento e Inteligência Sistêmica) é o banco de dados criptografado da Ordo Realitas. Este terminal centraliza registros de campo, arquivos sigilosos, especificações de equipamentos e análises de entidades paranormais para suporte às missões dos agentes.
+                    </p>
+                </div>
+                <div class="info-card" style="border-left: 3px solid var(--accent-gold);">
+                    <h3>STATUS DE CONEXÃO</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Sessão autenticada. Acesso concedido aos arquivos públicos e de nível I da Ordem.
+                    </p>
+                </div>
             </div>
 
-            <div class="doc-box">
-                <span class="clearance-badge" style="background: var(--cris-alert); color: #fff;">SIGILO ABSOLUTO</span>
-                <h3>ARQUIVO BLOQUEADO - ELEMENTO CONHECIMENTO</h3>
-                <p style="font-size: 0.9rem; color: #888;">
-                    [ REQUER CHAVE DE SEGURANÇA ADICIONAL PARA DESCRIPTOGRAFAR ]
-                </p>
+            <!-- Aba 2: Documentos -->
+            <div id="documentos" class="tab-content">
+                <h2 class="section-title">DOCUMENTOS DA MISSÃO</h2>
+                <div class="info-card">
+                    <h3>RELATÓRIO DE RECONHECIMENTO #001</h3>
+                    <p class="typewriter-text">
+                        Pistas recuperadas indicam oscilação na Membrana local. Recomenda-se varredura com equipamento de medição adequado antes de qualquer incursão.
+                    </p>
+                </div>
             </div>
+
+            <!-- Aba 3: Mural -->
+            <div id="mural" class="tab-content">
+                <h2 class="section-title">MURAL DA ORDEM</h2>
+                <div class="info-card">
+                    <h3>AVISOS DA SUPERINTENDÊNCIA</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Lembre-se: O conhecimento é uma faca de dois gumes. Transmita informações sigilosas apenas por canais seguros.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aba 4: Bestiário -->
+            <div id="bestiario" class="tab-content">
+                <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
+                <div class="info-card">
+                    <h3>AMEAÇAS CADASTRADAS</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Selecione ou busque uma entidade para visualizar fraquezas conhecidas e registros de combate.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aba 5: Equipamentos -->
+            <div id="equipamentos" class="tab-content">
+                <h2 class="section-title">CATÁLOGO DE EQUIPAMENTOS</h2>
+                <div class="info-card">
+                    <h3>ARSENAL & ITENS AMALDIÇOADOS</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Consulte o inventário de proteções, armas convencionais e artefatos sob custódia da Ordem.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script src="app.js"></script>
     <script>
-        // Validação de Segurança (Se não estiver logado, chuta pro index)
+        // Função de Troca de Abas
+        function trocarAba(abaId, elementoBotao) {
+            // Esconde todas as abas
+            const abas = document.querySelectorAll('.tab-content');
+            abas.forEach(aba => aba.classList.remove('active'));
+
+            // Remove classe 'active' de todos os botões
+            const botoes = document.querySelectorAll('.nav-btn');
+            botoes.forEach(btn => btn.classList.remove('active'));
+
+            // Mostra a aba clicada e ativa o botão correspondente
+            document.getElementById(abaId).classList.add('active');
+            elementoBotao.classList.add('active');
+        }
+
+        // Autenticação Firebase
         auth.onAuthStateChanged((user) => {
             if (user) {
                 const cod = localStorage.getItem("agente_cod") || "DESCONHECIDO";
