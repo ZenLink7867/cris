@@ -20,6 +20,7 @@
             padding: 30px;
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
             text-align: center;
+            width: 320px;
         }
         input {
             background: #1a1a1a;
@@ -27,7 +28,7 @@
             color: #fff;
             padding: 10px;
             margin: 10px 0;
-            width: 80%;
+            width: 90%;
             font-family: inherit;
         }
         button {
@@ -38,19 +39,28 @@
             font-weight: bold;
             cursor: pointer;
             font-family: inherit;
+            margin-top: 10px;
+            width: 98%;
         }
         button:hover {
             background: #fff;
         }
     </style>
+
+    <!-- Importação dos Scripts do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
     <div class="login-box">
         <h2>TERMINAL DE ACESSO RESTRITO</h2>
         <p>DIGITE SUAS CREDENCIAIS DE AGENTE</p>
-        <input type="text" id="agente" placeholder="CÓDIGO DE AGENTE"><br>
+        <input type="text" id="agente" placeholder="CÓDIGO DE AGENTE (ex: teste)"><br>
         <input type="password" id="senha" placeholder="SENHA"><br>
-        <button onclick="alert('Sistema em fase de teste!')">ENTRAR</button>
+        <button onclick="fazerLogin()">ACESSAR</button>
     </div>
+
+    <!-- Script de conexão -->
+    <script src="app.js"></script>
 </body>
 </html>
