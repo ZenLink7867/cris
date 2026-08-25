@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C.R.I.S. - TERMINAL PRINCIPAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cris-green: #00ff66;
+            --cris-glow: rgba(0, 255, 102, 0.4);
+            --cris-dark: #080d0a;
+            --cris-panel: #0d1712;
+            --cris-border: #1b3d29;
+            --cris-alert: #ff3333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--cris-dark);
+            color: var(--cris-green);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efeito CRT Screen */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Topbar estilo C.R.I.S. */
+        header {
+            background: var(--cris-panel);
+            border-bottom: 2px solid var(--cris-green);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 15px var(--cris-glow);
+            z-index: 2;
+        }
+
+        .system-title {
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--cris-alert);
+            color: var(--cris-alert);
+            padding: 5px 12px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: var(--cris-alert);
+            color: #000;
+        }
+
+        /* Layout em colunas parecendo o monitor do Samuel */
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--cris-panel);
+            border: 1px solid var(--cris-border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .agent-card {
+            border: 1px solid var(--cris-green);
+            padding: 15px;
+            background: rgba(0, 255, 102, 0.03);
+            text-align: center;
+        }
+
+        .agent-avatar {
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--cris-green);
+            margin: 0 auto 10px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .nav-menu button {
+            width: 100%;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--cris-border);
+            color: var(--cris-green);
+            padding: 12px;
+            text-align: left;
+            font-family: inherit;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-menu button:hover, .nav-menu button.active {
+            background: rgba(0, 255, 102, 0.15);
+            border-color: var(--cris-green);
+            box-shadow: 0 0 10px var(--cris-glow);
+        }
+
+        .content-area {
+            flex: 1;
+            background: var(--cris-panel);
+            border: 1px solid var(--cris-border);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            border-bottom: 1px solid var(--cris-green);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .doc-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px dashed var(--cris-border);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .doc-box h3 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .clearance-badge {
+            display: inline-block;
+            background: #ffaa00;
+            color: #000;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="system-title">C.R.I.S. // BANCO DE DADOS DA ORDEM</div>
+        <div class="agent-info">
+            <span>AGENTE: <strong id="nome-agente">CARREGANDO...</strong></span>
+            <button class="btn-logout" onclick="fazerLogout()">DESCONECTAR</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar Esquerda -->
+        <div class="sidebar">
+            <div class="agent-card">
+                <div class="agent-avatar">👤</div>
+                <h3 id="card-agente-nome">AGENTE</h3>
+                <span class="clearance-badge">ACESSO NÍVEL 1</span>
+                <p style="font-size: 0.8rem; color: #7baf92; margin-top: 5px;">STATUS: ATIVO</p>
+            </div>
+
+            <div class="nav-menu">
+                <button class="active">> 📄 ARQUIVOS CONFIDENCIAIS</button>
+                <button>> 🕵️ REGISTRO DE MISSÕES</button>
+                <button>> ☣️ CASOS PARANORMAIS</button>
+                <button>> 📻 INTERCEPTAÇÕES DE ÁUDIO</button>
+            </div>
+        </div>
+
+        <!-- Área Principal de Conteúdo -->
+        <div class="content-area">
+            <div class="section-header">// ARQUIVOS CONFIDENCIAIS DA MISSÃO</div>
+
+            <div class="doc-box">
+                <span class="clearance-badge" style="background: var(--cris-green);">DOCUMENTO #001</span>
+                <h3>RELATÓRIO DE RECONHECIMENTO INICIAL</h3>
+                <p style="font-size: 0.9rem; color: #a4c7b3;">
+                    Pistas encontradas na região indicam variação de membrana abaixo de 1.2. Atividade paranormal detectada. Recomenda-se cautela aos agentes em campo.
+                </p>
+            </div>
+
+            <div class="doc-box">
+                <span class="clearance-badge" style="background: var(--cris-alert); color: #fff;">SIGILO ABSOLUTO</span>
+                <h3>ARQUIVO BLOQUEADO - ELEMENTO CONHECIMENTO</h3>
+                <p style="font-size: 0.9rem; color: #888;">
+                    [ REQUER CHAVE DE SEGURANÇA ADICIONAL PARA DESCRIPTOGRAFAR ]
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Validação de Segurança (Se não estiver logado, chuta pro index)
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const cod = localStorage.getItem("agente_cod") || "DESCONHECIDO";
+                document.getElementById("nome-agente").innerText = cod;
+                document.getElementById("card-agente-nome").innerText = "AGENTE " + cod;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        function fazerLogout() {
+            auth.signOut().then(() => {
+                localStorage.removeItem("agente_cod");
+                window.location.href = "index.html";
+            });
+        }
+    </script>
+</body>
+</html>
