@@ -12,15 +12,21 @@
             --cris-dark: #080d0a;
             --cris-panel: #0d1712;
             --cris-border: #1b3d29;
-            --cris-mouse: #00ff66;
+            /* Nova variável para a linha de escaneamento */
+            --cris-scanline: rgba(0, 255, 102, 0.1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            /* Desativa o cursor padrão para usarmos o customizado */
-            cursor: none;
+            /* Modificado: Cursor pixelizado retrô do sistema */
+            cursor: pointer;
+        }
+
+        /* Garante que o cursor pixelizado apareça em tudo, inclusive inputs */
+        input, button {
+            cursor: pointer;
         }
 
         body {
@@ -33,33 +39,6 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
-        }
-
-        /* Mouse Customizado - Parte 1 (A "Mira") */
-        #custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 1px solid var(--cris-mouse);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none; /* Não interfere nos cliques */
-            z-index: 1000;
-            transform: translate(-50%, -50%); /* Centraliza no ponto do clique */
-            box-shadow: 0 0 10px var(--cris-glow);
-            transition: width 0.1s, height 0.1s; /* Animação ao clicar */
-        }
-
-        /* Mouse Customizado - Parte 2 (O Ponto Central) */
-        #custom-cursor-dot {
-            width: 4px;
-            height: 4px;
-            background-color: var(--cris-mouse);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 1001;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 5px var(--cris-green);
         }
 
         /* Efeito CRT - Monitor Antigo da Ordem */
@@ -83,6 +62,40 @@
             z-index: 5;
         }
 
+        /* O elemento que cria a animação holográfica de rolagem */
+        .hologram-effect {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* Não interfere nos cliques */
+            z-index: 8; /* Entre o terminal e o efeito CRT */
+            overflow: hidden;
+        }
+
+        /* A linha de escaneamento que rola */
+        .hologram-effect::after {
+            content: "";
+            position: absolute;
+            top: -100%; /* Começa acima do terminal */
+            left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                var(--cris-scanline) 10%,
+                transparent 20%
+            );
+            animation: rollingScan 4s linear infinite; /* Loop infinito */
+        }
+
+        /* Animação: Linha de Escaneamento Rolando (Rolling Scan) */
+        @keyframes rollingScan {
+            0% {
+                top: -100%;
+            }
+            100% {
+                top: 100%; /* Termina abaixo do terminal */
+            }
+        }
+
         .terminal-container {
             width: 420px;
             background: var(--cris-panel);
@@ -92,18 +105,18 @@
             z-index: 2;
             position: relative;
             
-            /* Animação Holográfica */
-            animation: holoFlicker 5s infinite, holoGlow 8s infinite alternate;
+            /* Mantivemos as animações anteriores, mas a rolagem é principal */
+            animation: holoFlicker 10s infinite, holoGlow 8s infinite alternate;
         }
 
-        /* Animação: Cintilação (Flicker) Holográfica sutil */
+        /* Animação: Cintilação (Flicker) Holográfica sutil - mais lenta agora */
         @keyframes holoFlicker {
             0%, 100% { opacity: 1; }
-            4%, 6% { opacity: 0.9; }
-            5% { opacity: 0.95; }
+            4%, 6% { opacity: 0.98; }
+            5% { opacity: 0.99; }
             8% { opacity: 1; }
             50% { opacity: 1; }
-            52% { opacity: 0.9; }
+            52% { opacity: 0.98; }
             54% { opacity: 1; }
         }
 
@@ -151,13 +164,13 @@
 
         .terminal-body {
             padding: 30px 25px;
+            position: relative; /* Para a linha holográfica */
         }
 
         .sub-header {
             font-size: 0.85rem;
             color: #7baf92;
             margin-bottom: 25px;
-            /* Modificado: barra verde removida */
             border-left: none;
             padding-left: 0;
         }
@@ -200,7 +213,6 @@
             padding: 14px;
             font-weight: bold;
             font-size: 1rem;
-            cursor: none; /* Garante que o cursor customizado continue */
             font-family: inherit;
             letter-spacing: 2px;
             margin-top: 10px;
@@ -233,13 +245,12 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-    <!-- Elementos do Mouse Customizado -->
-    <div id="custom-cursor"></div>
-    <div id="custom-cursor-dot"></div>
-
     <div class="vignette"></div>
 
     <div class="terminal-container">
+        <!-- Novo elemento para o efeito holográfico de rolagem -->
+        <div class="hologram-effect"></div>
+
         <div class="terminal-header">
             <h1>C.R.I.S. v4.1.3</h1>
             <div class="status-dot"></div>
@@ -258,7 +269,6 @@
 
             <div class="input-group">
                 <label for="senha">> CHAVE DE ACESSO:</label>
-                <!-- Modificado: placeholder="|", removido -->
                 <input type="password" id="senha">
             </div>
 
@@ -273,30 +283,5 @@
     </div>
 
     <script src="app.js"></script>
-    
-    <!-- Script do Mouse Customizado -->
-    <script>
-        const cursor = document.getElementById('custom-cursor');
-        const dot = document.getElementById('custom-cursor-dot');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-        });
-
-        // Efeito de clique: o círculo "encolhe" rápido
-        document.addEventListener('mousedown', () => {
-            cursor.style.width = '12px';
-            cursor.style.height = '12px';
-        });
-
-        // Efeito de soltar o clique: volta ao normal
-        document.addEventListener('mouseup', () => {
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-        });
-    </script>
 </body>
 </html>
