@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. - TERMINAL DE ACESSO RESTRITO</title>
+    <title>C.R.I.S. - TERMINAL DE ACESSO</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -180,24 +180,24 @@
 
     <div class="terminal-container">
         <div class="terminal-header">
-            <h1>C.R.I.S. v4.0.9</h1>
+            <h1>C.R.I.S. v4.1.3</h1>
             <div class="status-dot"></div>
         </div>
         
         <div class="terminal-body">
             <div class="sub-header">
-                SISTEMA DE INTELIGÊNCIA E BANCO DE DADOS<br>
-                AUTENTICAÇÃO EXIGIDA
+                CENTRAL DE RECONHECIMENTO E INTELIGÊNCIA<br>
+                AUTENTICAÇÃO OBRIGATÓRIA
             </div>
 
             <div class="input-group">
-                <label for="agente">> IDENTIFICADOR DO AGENTE:</label>
-                <input type="text" id="agente" placeholder="Ex: teste" autocomplete="off">
+                <label for="agente">> ID DE AGENTE:</label>
+                <input type="text" id="agente" placeholder="agente_0413" autocomplete="off">
             </div>
 
             <div class="input-group">
-                <label for="senha">> CHAVE DE CRIPTOGRAFIA:</label>
-                <input type="password" id="senha" placeholder="••••••••">
+                <label for="senha">> CHAVE DE ACESSO:</label>
+                <input type="password" id="senha" placeholder="|">
             </div>
 
             <button id="btn-acessar" onclick="fazerLogin()">[ AUTENTICAR ]</button>
@@ -205,7 +205,8 @@
         </div>
 
         <div class="footer-note">
-            PROPRIEDADE RESTRITA DA ORDO REALITAS. ACESSO NÃO AUTORIZADO É CRIME.
+            PROPRIEDADE RESTRITA DA ORDO REALITAS.
+            ACESSO NÃO AUTORIZADO É CRIME.
         </div>
     </div>
 
