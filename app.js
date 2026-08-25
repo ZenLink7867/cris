@@ -9,29 +9,49 @@ const firebaseConfig = {
   };
 
 // Inicializa o Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const auth = firebase.auth();
 
-// Função de Login do Terminal
+// Função de Login do Terminal C.R.I.S.
 function fazerLogin() {
   const usuarioInput = document.getElementById("agente").value.trim();
   const senhaInput = document.getElementById("senha").value;
+  const msgStatus = document.getElementById("msg-status");
+  const btn = document.getElementById("btn-acessar");
 
   if (!usuarioInput || !senhaInput) {
-    alert("ERRO: Preencha o código de agente e a senha!");
+    msgStatus.style.color = "#ff4444";
+    msgStatus.innerText = "ERRO: Informe agente e senha!";
     return;
   }
 
-  // Mascara o e-mail por trás dos panos usando o seu e-mail + id do agente
-  const emailCompleto = `zensites7867+${usuarioInput}@gmail.com`;
+  // Feedback visual no terminal
+  msgStatus.style.color = "#00ff66";
+  msgStatus.innerText = "DESCRIPTOGRAFANDO CREDENCIAIS...";
+  btn.disabled = true;
+
+  // Mascara o e-mail por trás dos panos
+  const emailCompleto = `crisordem+${usuarioInput}@gmail.com`;
 
   auth.signInWithEmailAndPassword(emailCompleto, senhaInput)
     .then((userCredential) => {
-      alert("ACESSO CONCEDIDO: Bem-vindo ao Terminal, Agente " + usuarioInput.toUpperCase());
-      // No futuro, aqui redirecionamos para a página interna (ex: painel.html)
+      msgStatus.style.color = "#00ff66";
+      msgStatus.innerText = "ACESSO CONCEDIDO. CARREGANDO BANCO DE DADOS...";
+      
+      // Salva o nome do agente para exibir no painel
+      localStorage.setItem("agente_cod", usuarioInput.toUpperCase());
+
+      // Redireciona para o painel em 1.5 segundos
+      setTimeout(() => {
+        window.location.href = "painel.html";
+      }, 1500);
     })
     .catch((error) => {
       console.error(error);
-      alert("ACESSO NEGADO: Credenciais inválidas ou agente não cadastrado.");
+      msgStatus.style.color = "#ff3333";
+      msgStatus.innerText = "ACESSO NEGADO: Credenciais inválidas.";
+      btn.disabled = false;
     });
 }
