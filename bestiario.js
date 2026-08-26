@@ -1,13 +1,12 @@
-const db = firebase.firestore();
 let listaCriaturas = [];
 
-// Normaliza textos para ignorar acentos e caixa alta/baixa
+// Normaliza textos para busca (remove acentos e caixa alta)
 function normalizarTexto(texto) {
     if (!texto) return "";
     return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// Associa a cor do badge ao elemento do Ordem Paranormal
+// Associa a cor do badge ao elemento
 function getClasseElemento(elementoStr) {
     const el = normalizarTexto(elementoStr);
     if (el.includes("sangue")) return "sangue";
@@ -18,14 +17,21 @@ function getClasseElemento(elementoStr) {
     return "";
 }
 
-// Alterna os filtros avançados
+// Alterna o painel de filtros avançados
 function toggleFiltros() {
     const painel = document.getElementById("painel-filtros");
-    if (painel) painel.classList.toggle("active");
+    if (painel) {
+        painel.classList.toggle("active");
+    }
 }
 
 /* --- CARREGAMENTO DO BANCO --- */
 function carregarBestiario() {
+    const grid = document.getElementById("grid-bestiario");
+    if (grid && listaCriaturas.length === 0) {
+        grid.innerHTML = "<p style='color: var(--cris-green);'>Carregando ameaças do banco de dados...</p>";
+    }
+
     db.collection("bestiario").get().then((querySnapshot) => {
         listaCriaturas = [];
         querySnapshot.forEach((doc) => {
@@ -34,7 +40,9 @@ function carregarBestiario() {
         renderizarGrid(listaCriaturas);
     }).catch((error) => {
         console.error("Erro ao carregar criaturas: ", error);
-        document.getElementById("grid-bestiario").innerHTML = "<p style='color: var(--accent-red);'>Erro ao conectar ao banco de dados.</p>";
+        if (grid) {
+            grid.innerHTML = "<p style='color: #ff3333;'>Erro ao conectar ao banco de dados.</p>";
+        }
     });
 }
 
@@ -46,7 +54,7 @@ function renderizarGrid(criaturas) {
     grid.innerHTML = "";
 
     if (criaturas.length === 0) {
-        grid.innerHTML = "<p style='color: var(--text-secondary); grid-column: 1/-1;'>Nenhuma entidade encontrada.</p>";
+        grid.innerHTML = "<p style='color: #7baf92; grid-column: 1/-1;'>Nenhuma entidade encontrada para os filtros selecionados.</p>";
         return;
     }
 
@@ -77,29 +85,47 @@ function renderizarGrid(criaturas) {
     });
 }
 
-/* --- FILTRO GLOBAL --- */
+// Obtém os valores marcados nos checkboxes de um grupo específico
+function getValoresMarcados(seletorGrupo) {
+    const checkboxes = document.querySelectorAll(seletorGrupo + ' input[type="checkbox"]:checked');
+    return Array.from(checkboxes).map(cb => normalizarTexto(cb.value));
+}
+
+/* --- FILTRO MULTIPLA SELEÇÃO --- */
 function filtrarBestiario() {
     const busca = normalizarTexto(document.getElementById("search-creature")?.value);
-    const elementoFiltro = document.getElementById("filter-elemento")?.value || "todos";
-    const tamanhoFiltro = document.getElementById("filter-tamanho")?.value || "todos";
+
+    // Captura múltiplos selecionados para cada filtro
+    const elementosSel = getValoresMarcados('.filtro-grupo:nth-child(1)');
+    const perigosSel = getValoresMarcados('.filtro-grupo:nth-child(2)');
+    const tiposSel = getValoresMarcados('.filtro-grupo:nth-child(3)');
+    const tamanhosSel = getValoresMarcados('.filtro-grupo:nth-child(4)');
 
     const filtrados = listaCriaturas.filter(c => {
-        const conteudoCompleto = normalizarTexto(`
-            ${c.nome || ''} 
-            ${c.descricao || ''} 
-            ${c.elementos || c.elemento || ''} 
-            ${c.tamanho || ''} 
-            ${c.perigo || ''} 
-            ${c['tipo-de-ser'] || ''}
-        `);
+        const nomeNorm = normalizarTexto(c.nome);
+        const descNorm = normalizarTexto(c.descricao);
+        const elemNorm = normalizarTexto(c.elementos || c.elemento);
+        const tamanhoNorm = normalizarTexto(c.tamanho);
+        const perigoNorm = normalizarTexto(c.perigo);
+        const tipoNorm = normalizarTexto(c['tipo-de-ser'] || c.tipo);
 
+        // 1. Busca textual global
+        const conteudoCompleto = `${nomeNorm} ${descNorm} ${elemNorm} ${tamanhoNorm} ${perigoNorm} ${tipoNorm}`;
         const bateBusca = busca === "" || conteudoCompleto.includes(busca);
 
-        const elementoValor = c.elementos || c.elemento || "";
-        const bateElemento = elementoFiltro === "todos" || normalizarTexto(elementoValor).includes(normalizarTexto(elementoFiltro));
-        const bateTamanho = tamanhoFiltro === "todos" || c.tamanho === tamanhoFiltro;
+        // 2. Filtro de Elementos (OU entre marcados)
+        const bateElemento = elementosSel.length === 0 || elementosSel.some(el => elemNorm.includes(el));
 
-        return bateBusca && bateElemento && bateTamanho;
+        // 3. Filtro de Perigo
+        const batePerigo = perigosSel.length === 0 || perigosSel.some(p => perigoNorm.includes(p));
+
+        // 4. Filtro de Tipo de Ser
+        const bateTipo = tiposSel.length === 0 || tiposSel.some(t => tipoNorm.includes(t));
+
+        // 5. Filtro de Tamanho
+        const bateTamanho = tamanhosSel.length === 0 || tamanhosSel.some(tam => tamanhoNorm.includes(tam));
+
+        return bateBusca && bateElemento && batePerigo && bateTipo && bateTamanho;
     });
 
     renderizarGrid(filtrados);
@@ -112,7 +138,7 @@ function abrirModal(criatura) {
     
     const elementoValor = criatura.elementos || criatura.elemento || 'N/A';
     const perigoValor = criatura.perigo || 'N/A';
-    const tipoValor = criatura['tipo-de-ser'] || 'Criatura';
+    const tipoValor = criatura['tipo-de-ser'] || criatura.tipo || 'Criatura';
     const classeCor = getClasseElemento(elementoValor);
 
     const tagsContainer = document.getElementById("modal-tags");
@@ -136,4 +162,14 @@ function abrirModal(criatura) {
 
 function fecharModal() {
     document.getElementById("modal-criatura").classList.remove("active");
+}
+
+// Carrega automaticamente assim que o documento termina de carregar
+document.addEventListener("DOMContentLoaded", () => {
+    carregarBestiario();
+});
+
+// Executa também imediatamente caso o DOM já tenha carregado
+if (document.readyState === "complete" || document.readyState === "interactive") {
+    carregarBestiario();
 }

@@ -1,160 +1,64 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. - Painel de Controle</title>
+<!-- ABA BESTIÁRIO PARANORMAL -->
+<div id="bestiario" class="tab-content">
+    <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
     
-    <!-- Google Fonts: Crimson Pro, Special Elite e Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Special+Elite&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <header>
-        <div class="system-branding">
-            <span class="system-logo">C.R.I.S.</span>
-            <span style="color: var(--text-secondary); font-family: var(--font-ui); font-size: 0.8rem;">| CENTRAL DE RECONHECIMENTO DE IRREGULARIDADES SOBRENATURAIS</span>
+    <!-- BARRA DE BUSCA E BOTÃO FILTROS -->
+    <div class="search-box-container">
+        <div class="search-input-wrapper">
+            <label for="search-creature">BUSCAR ENTIDADE (NOME, HISTÓRIA, ATRIBUTOS...)</label>
+            <input type="text" id="search-creature" placeholder="Digite qualquer termo (ex: cadáveres, garras, energia)..." oninput="filtrarBestiario()">
         </div>
-        <div class="agent-info">
-            <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-energia);">CARREGANDO...</strong></span>
-            <button class="btn-logout" onclick="fazerLogout()">DESCONECTAR</button>
-        </div>
-    </header>
+        <button type="button" class="btn-filtros-toggle" onclick="toggleFiltros()">
+            <span>⚙ FILTROS</span>
+        </button>
+    </div>
 
-    <div class="main-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="agent-card">
-                <div class="agent-avatar">🔮</div>
-                <h3 id="card-agente-nome">AGENTE</h3>
+    <!-- PAINEL DE FILTROS AVANÇADOS (MULTIPLA SELEÇÃO) -->
+    <div id="painel-filtros" class="painel-filtros">
+        <div class="filtros-grid">
+            <!-- ELEMENTOS -->
+            <div class="filtro-grupo">
+                <h4>ELEMENTO</h4>
+                <label class="chk-container"><input type="checkbox" value="sangue" onchange="filtrarBestiario()"> Sangue</label>
+                <label class="chk-container"><input type="checkbox" value="morte" onchange="filtrarBestiario()"> Morte</label>
+                <label class="chk-container"><input type="checkbox" value="energia" onchange="filtrarBestiario()"> Energia</label>
+                <label class="chk-container"><input type="checkbox" value="conhecimento" onchange="filtrarBestiario()"> Conhecimento</label>
+                <label class="chk-container"><input type="checkbox" value="medo" onchange="filtrarBestiario()"> Medo</label>
             </div>
 
-            <div class="nav-menu">
-                <button class="nav-btn active" onclick="trocarAba('home', this)">VISÃO GERAL</button>
-                <button class="nav-btn" onclick="trocarAba('documentos', this)">DOCUMENTOS</button>
-                <button class="nav-btn" onclick="trocarAba('mural', this)">MURAL DA ORDEM</button>
-                <button class="nav-btn" onclick="trocarAba('bestiario', this)">BESTIÁRIO</button>
-                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">EQUIPAMENTOS</button>
-            </div>
-        </div>
-
-        <!-- Área Central -->
-        <div class="content-area">
-            
-            <!-- Aba 1: Home -->
-            <div id="home" class="tab-content active">
-                <h2 class="section-title">TERMINAL CENTRAL C.R.I.S.</h2>
-                <div class="info-card">
-                    <h3>SISTEMA INTEGRADO DE ENERGIA</h3>
-                    <p>
-                        A C.R.I.S. opera sob a frequência do elemento de Energia. Este banco de dados armazena registros criptografados, dados de campo e relatórios táticos de entidades paranormais para consulta imediata.
-                    </p>
-                </div>
+            <!-- PERIGO -->
+            <div class="filtro-grupo">
+                <h4>PERIGO / VD</h4>
+                <label class="chk-container"><input type="checkbox" value="vd 20" onchange="filtrarBestiario()"> VD 20 / Inexistente</label>
+                <label class="chk-container"><input type="checkbox" value="baixo" onchange="filtrarBestiario()"> Baixo</label>
+                <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
+                <label class="chk-container"><input type="checkbox" value="alto" onchange="filtrarBestiario()"> Alto</label>
+                <label class="chk-container"><input type="checkbox" value="extremo" onchange="filtrarBestiario()"> Extremo</label>
             </div>
 
-            <!-- Aba 2: Documentos -->
-            <div id="documentos" class="tab-content">
-                <h2 class="section-title">ARQUIVOS SIGILOSOS</h2>
-                <div class="info-card">
-                    <h3>RELATÓRIO #001 - OSCILAÇÃO DE MEMBRANA</h3>
-                    <p>Registros indicam que a Membrana na região central apresenta perturbações no elemento de Energia. Cuidado ao manusear equipamentos eletrônicos em campo.</p>
-                </div>
+            <!-- TIPO DE SER -->
+            <div class="filtro-grupo">
+                <h4>TIPO DE SER</h4>
+                <label class="chk-container"><input type="checkbox" value="criatura" onchange="filtrarBestiario()"> Criatura</label>
+                <label class="chk-container"><input type="checkbox" value="pessoa" onchange="filtrarBestiario()"> Pessoa / Cultista</label>
+                <label class="chk-container"><input type="checkbox" value="reliquia" onchange="filtrarBestiario()"> Relíquia</label>
+                <label class="chk-container"><input type="checkbox" value="objeto" onchange="filtrarBestiario()"> Objeto Amaldiçoado</label>
             </div>
 
-            <!-- Aba 3: Mural -->
-            <div id="mural" class="tab-content">
-                <h2 class="section-title">MURAL DA ORDEM</h2>
-                <div class="info-card">
-                    <h3>AVISO DA SUPERINTENDÊNCIA</h3>
-                    <p>O conhecimento é perigoso. Nunca compartilhe suas credenciais de acesso fora dos terminais criptografados.</p>
-                </div>
+            <!-- TAMANHO -->
+            <div class="filtro-grupo">
+                <h4>TAMANHO</h4>
+                <label class="chk-container"><input type="checkbox" value="pequeno" onchange="filtrarBestiario()"> Pequeno</label>
+                <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
+                <label class="chk-container"><input type="checkbox" value="grande" onchange="filtrarBestiario()"> Grande</label>
+                <label class="chk-container"><input type="checkbox" value="enorme" onchange="filtrarBestiario()"> Enorme</label>
+                <label class="chk-container"><input type="checkbox" value="colossal" onchange="filtrarBestiario()"> Colossal</label>
             </div>
-
-            <!-- Aba 4: Bestiário -->
-            <div id="bestiario" class="tab-content">
-                <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
-                
-                <!-- Barra de Busca e Filtros -->
-                <div class="filter-bar">
-                    <div class="search-header">
-                        <div class="filter-group" style="flex: 1;">
-                            <label>Buscar Entidade (Nome, História, Atributos...)</label>
-                            <input type="text" id="search-creature" class="search-input" placeholder="Digite qualquer termo (ex: cadáveres, garras, energia)..." oninput="filtrarBestiario()">
-                        </div>
-                        <button type="button" class="btn-toggle-filtros" onclick="toggleFiltros()">⚙️ FILTROS</button>
-                    </div>
-
-                    <!-- Menu de Filtros Secundários -->
-                    <div id="painel-filtros" class="filtros-avancados">
-                        <div class="filter-group">
-                            <label>Elemento</label>
-                            <select id="filter-elemento" class="filter-select" onchange="filtrarBestiario()">
-                                <option value="todos">Todos</option>
-                                <option value="Sangue">Sangue</option>
-                                <option value="Morte">Morte</option>
-                                <option value="Energia">Energia</option>
-                                <option value="Conhecimento">Conhecimento</option>
-                                <option value="Medo">Medo</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label>Tamanho</label>
-                            <select id="filter-tamanho" class="filter-select" onchange="filtrarBestiario()">
-                                <option value="todos">Todos</option>
-                                <option value="Pequeno">Pequeno</option>
-                                <option value="Médio">Médio</option>
-                                <option value="Grande">Grande</option>
-                                <option value="Enorme">Enorme</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="creatures-grid" id="grid-bestiario">
-                    <p style="color: var(--text-secondary);">Carregando ameaças do banco de dados...</p>
-                </div>
-            </div>
-
-            <!-- Aba 5: Equipamentos -->
-            <div id="equipamentos" class="tab-content">
-                <h2 class="section-title">CATÁLOGO DE EQUIPAMENTOS</h2>
-                <div class="info-card">
-                    <h3>ARSENAL E ARTEFATOS</h3>
-                    <p>Em breve: Consulta dinâmica ao estoque de itens amaldiçoados e equipamentos táticos.</p>
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <!-- Modal de Detalhes -->
-    <div class="modal-overlay" id="modal-criatura">
-        <div class="modal-body">
-            <button class="modal-close" onclick="fecharModal()">&times;</button>
-            <h2 id="modal-nome" class="section-title" style="margin-bottom: 10px;">NOME DA CRIATURA</h2>
-            <div id="modal-tags" class="creature-tags" style="margin-bottom: 20px;"></div>
-            <img id="modal-img" src="" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 15px; display: none;">
-            <div id="modal-descricao" style="line-height: 1.6; font-size: 1.1rem; color: var(--text-primary);"></div>
-        </div>
+    <!-- GRID DE CARDS -->
+    <div id="grid-bestiario" class="grid-bestiario">
+        <p style="color: var(--cris-green); text-shadow: 0 0 5px var(--cris-glow);">Carregando ameaças do banco de dados...</p>
     </div>
-
-    <!-- ===== SCRIPTS DO PROJETO ===== -->
-
-    <!-- 1. SDKs do Firebase (Versão Compatível) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-    <!-- 2. Configurações do Firebase (Onde você inicializou a app) -->
-    <script src="firebase-config.js"></script>
-
-    <!-- 3. App Core (Navegação de abas, Logout, Auth check geral) -->
-    <script src="app.js"></script>
-
-    <!-- 4. Módulos Específicos das Abas -->
-    <script src="bestiario.js"></script>
-
-</body>
-</html>
+</div>

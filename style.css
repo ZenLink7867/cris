@@ -426,3 +426,71 @@ header {
     font-size: 1.5rem;
     cursor: pointer;
 }
+
+.search-box-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 15px;
+}
+
+.search-input-wrapper {
+    flex: 1;
+}
+
+.btn-filtros-toggle {
+    width: auto !important;
+    padding: 12px 20px !important;
+    margin-top: 0 !important;
+    background: transparent !important;
+    border: 1px solid var(--cris-green) !important;
+    color: var(--cris-green) !important;
+    cursor: pointer;
+}
+
+.btn-filtros-toggle:hover {
+    background: rgba(0, 255, 102, 0.2) !important;
+}
+
+/* PAINEL DE FILTROS EXPANSÍVEL */
+.painel-filtros {
+    display: none;
+    background: rgba(8, 13, 10, 0.85);
+    border: 1px solid var(--cris-border);
+    border-left: 3px solid var(--cris-green);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.painel-filtros.active {
+    display: block;
+}
+
+.filtros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.filtro-grupo h4 {
+    color: var(--cris-green);
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--cris-border);
+    padding-bottom: 4px;
+}
+
+.chk-container {
+    display: block;
+    font-size: 0.8rem;
+    color: #a3c9b4;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.chk-container input[type="checkbox"] {
+    width: auto !important;
+    margin-right: 6px;
+    accent-color: var(--cris-green);
+}
