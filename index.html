@@ -14,6 +14,11 @@
             --cris-border: #1b3d29;
         }
 
+        /* Garante que paddings e bordas não estorem a largura dos containers */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         /* Desativa cursor padrão em desktops */
         @media (pointer: fine) {
             * {
@@ -31,6 +36,7 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
+            margin: 0;
         }
 
         /* --- CURSOR SETA PADRÃO PIXELADA E GLITCH --- */
@@ -105,6 +111,7 @@
         /* TERMINAL CONTAINER */
         .terminal-container {
             width: 420px;
+            max-width: 90vw;
             background: var(--cris-panel);
             border: 2px solid var(--cris-green);
             box-shadow: 0 0 25px var(--cris-glow), inset 0 0 15px rgba(0,255,102,0.1);
@@ -168,6 +175,7 @@
 
         .terminal-header h1 {
             font-size: 1.1rem;
+            margin: 0;
             text-shadow: 0 0 8px var(--cris-glow);
         }
 

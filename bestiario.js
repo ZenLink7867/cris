@@ -1,18 +1,6 @@
 const db = firebase.firestore();
 let listaCriaturas = [];
 
-function trocarAba(abaId, elementoBotao) {
-    document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-    document.getElementById(abaId).classList.add('active');
-    elementoBotao.classList.add('active');
-
-    if (abaId === 'bestiario' && listaCriaturas.length === 0) {
-        carregarBestiario();
-    }
-}
-
 // Normaliza textos para ignorar acentos e caixa alta/baixa
 function normalizarTexto(texto) {
     if (!texto) return "";
@@ -32,7 +20,8 @@ function getClasseElemento(elementoStr) {
 
 // Alterna os filtros avançados
 function toggleFiltros() {
-    document.getElementById("painel-filtros").classList.toggle("active");
+    const painel = document.getElementById("painel-filtros");
+    if (painel) painel.classList.toggle("active");
 }
 
 /* --- CARREGAMENTO DO BANCO --- */
@@ -52,6 +41,8 @@ function carregarBestiario() {
 /* --- RENDERIZAÇÃO --- */
 function renderizarGrid(criaturas) {
     const grid = document.getElementById("grid-bestiario");
+    if (!grid) return;
+    
     grid.innerHTML = "";
 
     if (criaturas.length === 0) {
@@ -88,9 +79,9 @@ function renderizarGrid(criaturas) {
 
 /* --- FILTRO GLOBAL --- */
 function filtrarBestiario() {
-    const busca = normalizarTexto(document.getElementById("search-creature").value);
-    const elementoFiltro = document.getElementById("filter-elemento").value;
-    const tamanhoFiltro = document.getElementById("filter-tamanho").value;
+    const busca = normalizarTexto(document.getElementById("search-creature")?.value);
+    const elementoFiltro = document.getElementById("filter-elemento")?.value || "todos";
+    const tamanhoFiltro = document.getElementById("filter-tamanho")?.value || "todos";
 
     const filtrados = listaCriaturas.filter(c => {
         const conteudoCompleto = normalizarTexto(`
@@ -145,21 +136,4 @@ function abrirModal(criatura) {
 
 function fecharModal() {
     document.getElementById("modal-criatura").classList.remove("active");
-}
-
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        const cod = localStorage.getItem("agente_cod") || "DESCONHECIDO";
-        document.getElementById("nome-agente").innerText = cod;
-        document.getElementById("card-agente-nome").innerText = "AGENTE " + cod;
-    } else {
-        window.location.href = "index.html";
-    }
-});
-
-function fazerLogout() {
-    auth.signOut().then(() => {
-        localStorage.removeItem("agente_cod");
-        window.location.href = "index.html";
-    });
 }

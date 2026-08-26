@@ -9,11 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Special+Elite&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-
-    <!-- SDKs do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -145,6 +140,21 @@
         </div>
     </div>
 
+    <!-- ===== SCRIPTS DO PROJETO ===== -->
+
+    <!-- 1. SDKs do Firebase (Versão Compatível) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- 2. Configurações do Firebase (Onde você inicializou a app) -->
+    <script src="firebase-config.js"></script>
+
+    <!-- 3. App Core (Navegação de abas, Logout, Auth check geral) -->
+    <script src="app.js"></script>
+
+    <!-- 4. Módulos Específicos das Abas -->
     <script src="bestiario.js"></script>
+
 </body>
 </html>
