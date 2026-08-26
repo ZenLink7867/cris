@@ -1,64 +1,210 @@
-<!-- ABA BESTIÁRIO PARANORMAL -->
-<div id="bestiario" class="tab-content">
-    <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C.R.I.S. - PAINEL OPERACIONAL</title>
     
-    <!-- BARRA DE BUSCA E BOTÃO FILTROS -->
-    <div class="search-box-container">
-        <div class="search-input-wrapper">
-            <label for="search-creature">BUSCAR ENTIDADE (NOME, HISTÓRIA, ATRIBUTOS...)</label>
-            <input type="text" id="search-creature" placeholder="Digite qualquer termo (ex: cadáveres, garras, energia)..." oninput="filtrarBestiario()">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS Global do Painel -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase Scripts (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="system-branding">
+            <span class="system-logo">C.R.I.S.</span>
+            <span style="color: var(--text-secondary); font-size: 0.85rem;">| CENTRAL DE RECONHECIMENTO E INTELIGÊNCIA</span>
         </div>
-        <button type="button" class="btn-filtros-toggle" onclick="toggleFiltros()">
-            <span>⚙ FILTROS</span>
-        </button>
-    </div>
+        <div class="agent-info">
+            <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-gold);">CARREGANDO...</strong></span>
+            <button class="btn-logout" onclick="fazerLogout()">DESCONECTAR</button>
+        </div>
+    </header>
 
-    <!-- PAINEL DE FILTROS AVANÇADOS -->
-    <div id="painel-filtros" class="painel-filtros">
-        <div class="filtros-grid">
-            <!-- ELEMENTOS -->
-            <div class="filtro-grupo" data-filtro="elementos">
-                <h4>ELEMENTO</h4>
-                <label class="chk-container"><input type="checkbox" value="sangue" onchange="filtrarBestiario()"> Sangue</label>
-                <label class="chk-container"><input type="checkbox" value="morte" onchange="filtrarBestiario()"> Morte</label>
-                <label class="chk-container"><input type="checkbox" value="energia" onchange="filtrarBestiario()"> Energia</label>
-                <label class="chk-container"><input type="checkbox" value="conhecimento" onchange="filtrarBestiario()"> Conhecimento</label>
-                <label class="chk-container"><input type="checkbox" value="medo" onchange="filtrarBestiario()"> Medo</label>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="agent-card">
+                <div class="agent-avatar">🕵️</div>
+                <h3 id="card-agente-nome" style="font-family: var(--font-heading);">AGENTE</h3>
+                <span class="clearance-tag">NÍVEL DE ACESSO: I</span>
             </div>
 
-            <!-- PERIGO (CATEGORIAS ATUALIZADAS) -->
-            <div class="filtro-grupo" data-filtro="perigo">
-                <h4>PERIGO</h4>
-                <label class="chk-container"><input type="checkbox" value="alto" onchange="filtrarBestiario()"> Alto</label>
-                <label class="chk-container"><input type="checkbox" value="letal" onchange="filtrarBestiario()"> Letal</label>
-                <label class="chk-container"><input type="checkbox" value="critico" onchange="filtrarBestiario()"> Crítico</label>
-                <label class="chk-container"><input type="checkbox" value="extremo" onchange="filtrarBestiario()"> Extremo</label>
-                <label class="chk-container"><input type="checkbox" value="terminal" onchange="filtrarBestiario()"> Terminal</label>
-            </div>
-
-            <!-- TIPO DE SER -->
-            <div class="filtro-grupo" data-filtro="tipo">
-                <h4>TIPO DE SER</h4>
-                <label class="chk-container"><input type="checkbox" value="criatura" onchange="filtrarBestiario()"> Criatura</label>
-                <label class="chk-container"><input type="checkbox" value="pessoa" onchange="filtrarBestiario()"> Pessoa / Cultista</label>
-                <label class="chk-container"><input type="checkbox" value="reliquia" onchange="filtrarBestiario()"> Relíquia</label>
-                <label class="chk-container"><input type="checkbox" value="objeto" onchange="filtrarBestiario()"> Objeto Amaldiçoado</label>
-            </div>
-
-            <!-- TAMANHO -->
-            <div class="filtro-grupo" data-filtro="tamanho">
-                <h4>TAMANHO</h4>
-                <label class="chk-container"><input type="checkbox" value="pequeno" onchange="filtrarBestiario()"> Pequeno</label>
-                <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
-                <label class="chk-container"><input type="checkbox" value="grande" onchange="filtrarBestiario()"> Grande</label>
-                <label class="chk-container"><input type="checkbox" value="enorme" onchange="filtrarBestiario()"> Enorme</label>
-                <label class="chk-container"><input type="checkbox" value="colossal" onchange="filtrarBestiario()"> Colossal</label>
+            <div class="nav-menu">
+                <button class="nav-btn active" onclick="trocarAba('home', this)">⚙️ CENTRAL C.R.I.S.</button>
+                <button class="nav-btn" onclick="trocarAba('documentos', this)">📄 DOCUMENTOS</button>
+                <button class="nav-btn" onclick="trocarAba('mural', this)">📌 MURAL DA ORDEM</button>
+                <button class="nav-btn" onclick="trocarAba('bestiario', this)">☣️ BESTIÁRIO</button>
+                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">🎒 EQUIPAMENTOS</button>
             </div>
         </div>
+
+        <!-- Área Central -->
+        <div class="content-area">
+            
+            <!-- Aba 1: Home/Visão Geral -->
+            <div id="home" class="tab-content active">
+                <h2 class="section-title">CENTRAL DE OPERAÇÕES C.R.I.S.</h2>
+                <div class="info-card">
+                    <h3>SOBRE O SISTEMA</h3>
+                    <p class="typewriter-text">
+                        A C.R.I.S. (Central de Reconhecimento e Inteligência Sistêmica) é o banco de dados criptografado da Ordo Realitas. Este terminal centraliza registros de campo, arquivos sigilosos, especificações de equipamentos e análises de entidades paranormais para suporte às missões dos agentes.
+                    </p>
+                </div>
+                <div class="info-card" style="border-left: 3px solid var(--accent-gold);">
+                    <h3>STATUS DE CONEXÃO</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Sessão autenticada. Acesso concedido aos arquivos públicos e de nível I da Ordem.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aba 2: Documentos -->
+            <div id="documentos" class="tab-content">
+                <h2 class="section-title">DOCUMENTOS DA MISSÃO</h2>
+                <div class="info-card">
+                    <h3>RELATÓRIO DE RECONHECIMENTO #001</h3>
+                    <p class="typewriter-text">
+                        Pistas recuperadas indicam oscilação na Membrana local. Recomenda-se varredura com equipamento de medição adequado antes de qualquer incursão.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aba 3: Mural -->
+            <div id="mural" class="tab-content">
+                <h2 class="section-title">MURAL DA ORDEM</h2>
+                <div class="info-card">
+                    <h3>AVISOS DA SUPERINTENDÊNCIA</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Lembre-se: O conhecimento é uma faca de dois gumes. Transmita informações sigilosas apenas por canais seguros.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Aba 4: Bestiário Paranormal -->
+            <div id="bestiario" class="tab-content">
+                <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
+                
+                <!-- Barra de Busca + Botão Filtros -->
+                <div class="search-box-container">
+                    <div class="search-input-wrapper">
+                        <label for="search-creature">BUSCAR ENTIDADE (NOME, HISTÓRIA, ATRIBUTOS...)</label>
+                        <input type="text" id="search-creature" placeholder="Digite qualquer termo (ex: garras, morte, lodo)..." oninput="filtrarBestiario()">
+                    </div>
+                    <button type="button" class="btn-filtros-toggle" onclick="toggleFiltros()">
+                        <span>⚙ FILTROS</span>
+                    </button>
+                </div>
+
+                <!-- Painel de Filtros -->
+                <div id="painel-filtros" class="painel-filtros">
+                    <div class="filtros-grid">
+                        <!-- ELEMENTOS -->
+                        <div class="filtro-grupo" data-filtro="elementos">
+                            <h4>ELEMENTO</h4>
+                            <label class="chk-container"><input type="checkbox" value="sangue" onchange="filtrarBestiario()"> Sangue</label>
+                            <label class="chk-container"><input type="checkbox" value="morte" onchange="filtrarBestiario()"> Morte</label>
+                            <label class="chk-container"><input type="checkbox" value="energia" onchange="filtrarBestiario()"> Energia</label>
+                            <label class="chk-container"><input type="checkbox" value="conhecimento" onchange="filtrarBestiario()"> Conhecimento</label>
+                            <label class="chk-container"><input type="checkbox" value="medo" onchange="filtrarBestiario()"> Medo</label>
+                        </div>
+
+                        <!-- PERIGO -->
+                        <div class="filtro-grupo" data-filtro="perigo">
+                            <h4>PERIGO</h4>
+                            <label class="chk-container"><input type="checkbox" value="alto" onchange="filtrarBestiario()"> Alto</label>
+                            <label class="chk-container"><input type="checkbox" value="letal" onchange="filtrarBestiario()"> Letal</label>
+                            <label class="chk-container"><input type="checkbox" value="critico" onchange="filtrarBestiario()"> Crítico</label>
+                            <label class="chk-container"><input type="checkbox" value="extremo" onchange="filtrarBestiario()"> Extremo</label>
+                            <label class="chk-container"><input type="checkbox" value="terminal" onchange="filtrarBestiario()"> Terminal</label>
+                        </div>
+
+                        <!-- TAMANHO -->
+                        <div class="filtro-grupo" data-filtro="tamanho">
+                            <h4>TAMANHO</h4>
+                            <label class="chk-container"><input type="checkbox" value="minusculo" onchange="filtrarBestiario()"> Minúsculo</label>
+                            <label class="chk-container"><input type="checkbox" value="pequeno" onchange="filtrarBestiario()"> Pequeno</label>
+                            <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
+                            <label class="chk-container"><input type="checkbox" value="grande" onchange="filtrarBestiario()"> Grande</label>
+                            <label class="chk-container"><input type="checkbox" value="enorme" onchange="filtrarBestiario()"> Enorme</label>
+                            <label class="chk-container"><input type="checkbox" value="colossal" onchange="filtrarBestiario()"> Colossal</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Dinâmico de Cards -->
+                <div id="grid-bestiario" class="grid-bestiario">
+                    <p style="color: var(--text-secondary);">Carregando ameaças do banco de dados...</p>
+                </div>
+            </div>
+
+            <!-- Aba 5: Equipamentos -->
+            <div id="equipamentos" class="tab-content">
+                <h2 class="section-title">CATÁLOGO DE EQUIPAMENTOS</h2>
+                <div class="info-card">
+                    <h3>ARSENAL & ITENS AMALDIÇOADOS</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Consulte o inventário de proteções, armas convencionais e artefatos sob custódia da Ordem.
+                    </p>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <!-- GRID DE CARDS -->
-    <div id="grid-bestiario" class="grid-bestiario">
-        <p style="color: var(--cris-green);">Carregando ameaças do banco de dados...</p>
+    <!-- MODAL DE DETALHES DA ENTIDADE -->
+    <div id="modal-criatura" class="modal-overlay" onclick="if(event.target === this) fecharModal()">
+        <div class="modal-body">
+            <button class="modal-close" onclick="fecharModal()">&times;</button>
+            <h2 id="modal-nome" class="section-title">---</h2>
+            <div id="modal-tags" class="creature-tags" style="margin-bottom: 15px;"></div>
+            <img id="modal-img" src="" class="creature-img" style="height: 250px; margin-bottom: 15px; display: none;">
+            <p id="modal-descricao" style="line-height: 1.6; color: var(--text-primary);"></p>
+        </div>
     </div>
-</div>
+
+    <!-- Scripts de Lógica -->
+    <script src="app.js"></script>
+    <script src="bestiario.js"></script>
+    
+    <script>
+        // Função de Troca de Abas
+        function trocarAba(abaId, elementoBotao) {
+            const abas = document.querySelectorAll('.tab-content');
+            abas.forEach(aba => aba.classList.remove('active'));
+
+            const botoes = document.querySelectorAll('.nav-btn');
+            botoes.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(abaId).classList.add('active');
+            elementoBotao.classList.add('active');
+        }
+
+        // Autenticação Firebase
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                const cod = localStorage.getItem("agente_cod") || "DESCONHECIDO";
+                document.getElementById("nome-agente").innerText = cod;
+                document.getElementById("card-agente-nome").innerText = "AGENTE " + cod;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        function fazerLogout() {
+            auth.signOut().then(() => {
+                localStorage.removeItem("agente_cod");
+                window.location.href = "index.html";
+            });
+        }
+    </script>
+</body>
+</html>
