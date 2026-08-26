@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C.R.I.S. - Painel de Controle</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Crimson Pro (estilo Adobe Hebrew), Special Elite e Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Special+Elite&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -20,15 +20,15 @@
             --text-primary: #ebdcf7;
             --text-secondary: #a692ba;
             
-            /* Destaques de Elemento */
+            /* Destaques */
             --accent-energia: #d000df;
             --accent-energia-glow: rgba(208, 0, 223, 0.35);
             --accent-red: #d93838;
             
-            /* Tipografia */
-            --font-body: 'Crimson Pro', serif;       /* Texto principal legível */
-            --font-stamp: 'Special Elite', monospace; /* Detalhes, badges e títulos rústicos */
-            --font-ui: 'Inter', sans-serif;           /* Elementos de interface/botões */
+            /* Tipografia Ajustada */
+            --font-body: 'Crimson Pro', serif;       /* Fonte principal (estilo Adobe Hebrew) */
+            --font-stamp: 'Special Elite', monospace; /* Restrito a Títulos e Nomes das Criaturas */
+            --font-ui: 'Inter', sans-serif;          /* Elementos de interface */
         }
 
         * {
@@ -41,13 +41,13 @@
             background-color: var(--bg-main);
             color: var(--text-primary);
             font-family: var(--font-body);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Topbar */
+        /* Header */
         header {
             background: var(--bg-panel);
             border-bottom: 1px solid var(--border-color);
@@ -96,7 +96,7 @@
             color: #fff;
         }
 
-        /* Layout Principal */
+        /* Layout Main */
         .main-container {
             display: flex;
             flex: 1;
@@ -138,16 +138,10 @@
             background: #000;
         }
 
-        .clearance-tag {
-            font-family: var(--font-stamp);
-            display: inline-block;
-            background: rgba(208, 0, 223, 0.15);
-            color: var(--accent-energia);
-            border: 1px solid var(--accent-energia);
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 3px;
-            margin-top: 6px;
+        .agent-card h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1.2rem;
         }
 
         .nav-menu {
@@ -183,7 +177,7 @@
             box-shadow: inset 3px 0 0 var(--accent-energia);
         }
 
-        /* Área de Conteúdo */
+        /* Content Area */
         .content-area {
             flex: 1;
             background: var(--bg-panel);
@@ -221,15 +215,13 @@
         }
 
         .info-card h3 {
-            font-family: var(--font-stamp);
-            font-size: 1.2rem;
+            font-family: var(--font-body);
+            font-size: 1.3rem;
             margin-bottom: 8px;
             color: var(--text-primary);
         }
 
-        /* --- ESTILOS DO BESTIÁRIO DINÂMICO --- */
-
-        /* Barra de Filtros */
+        /* Filter Bar */
         .filter-bar {
             display: flex;
             gap: 15px;
@@ -269,7 +261,7 @@
             border-color: var(--accent-energia);
         }
 
-        /* Grid de Criaturas */
+        /* Bestiário Grid */
         .creatures-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -304,16 +296,18 @@
             padding: 12px;
         }
 
+        /* Nome da criatura em Special Elite conforme pedido */
         .creature-name {
             font-family: var(--font-stamp);
             font-size: 1.1rem;
             color: var(--text-primary);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .creature-tags {
             display: flex;
             gap: 6px;
+            flex-wrap: wrap;
             font-family: var(--font-ui);
             font-size: 0.7rem;
         }
@@ -326,7 +320,7 @@
             text-transform: uppercase;
         }
 
-        /* Modal de Detalhes da Criatura */
+        /* Modal Overlay */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -390,8 +384,7 @@
         <div class="sidebar">
             <div class="agent-card">
                 <div class="agent-avatar">🔮</div>
-                <h3 id="card-agente-nome" style="font-family: var(--font-stamp);">AGENTE</h3>
-                <span class="clearance-tag">NÍVEL DE ACESSO: I</span>
+                <h3 id="card-agente-nome">AGENTE</h3>
             </div>
 
             <div class="nav-menu">
@@ -412,7 +405,7 @@
                 <div class="info-card">
                     <h3>SISTEMA INTEGRADO DE ENERGIA</h3>
                     <p>
-                        A C.R.I.S. (Central de Reconhecimento e Inteligência Sistêmica) opera sob a frequência do elemento de Energia. Este banco de dados armazena registros criptografados, dados de campo e relatórios táticos de entidades paranormais para consulta imediata de agentes autorizados.
+                        A C.R.I.S. opera sob a frequência do elemento de Energia. Este banco de dados armazena registros criptografados, dados de campo e relatórios táticos de entidades paranormais para consulta imediata.
                     </p>
                 </div>
             </div>
@@ -435,7 +428,7 @@
                 </div>
             </div>
 
-            <!-- Aba 4: Bestiário (DINÂMICO) -->
+            <!-- Aba 4: Bestiário -->
             <div id="bestiario" class="tab-content">
                 <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
                 
@@ -468,7 +461,6 @@
                     </div>
                 </div>
 
-                <!-- Grid onde o Firebase vai injetar os cards -->
                 <div class="creatures-grid" id="grid-bestiario">
                     <p style="color: var(--text-secondary);">Carregando ameaças do banco de dados...</p>
                 </div>
@@ -486,7 +478,7 @@
         </div>
     </div>
 
-    <!-- Modal para Visualizar a Criatura em Detalhes -->
+    <!-- Modal de Detalhes -->
     <div class="modal-overlay" id="modal-criatura">
         <div class="modal-body">
             <button class="modal-close" onclick="fecharModal()">&times;</button>
@@ -499,11 +491,9 @@
 
     <script src="app.js"></script>
     <script>
-        // Inicializar Firestore (garanta que o Firebase já foi iniciado em app.js)
         const db = firebase.firestore();
-        let listaCriaturas = []; // Guarda as criaturas carregadas do Firebase
+        let listaCriaturas = [];
 
-        // Troca de Abas
         function trocarAba(abaId, elementoBotao) {
             document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -511,13 +501,12 @@
             document.getElementById(abaId).classList.add('active');
             elementoBotao.classList.add('active');
 
-            // Carrega o bestiário apenas quando a aba for aberta pela 1ª vez
             if (abaId === 'bestiario' && listaCriaturas.length === 0) {
                 carregarBestiario();
             }
         }
 
-        // --- LÓGICA DE BUSCA DO FIREBASE ---
+        /* --- CONSULTA E MAPEAMENTO DE CAMPOS CORRIGIDOS --- */
         function carregarBestiario() {
             db.collection("bestiario").get().then((querySnapshot) => {
                 listaCriaturas = [];
@@ -547,13 +536,17 @@
 
                 const imgHtml = c.imagem ? `<img src="${c.imagem}" class="creature-img" alt="${c.nome}">` : `<div class="creature-img" style="display:flex;align-items:center;justify-content:center;color:#444;">SEM IMAGEM</div>`;
 
+                // Mapeamento exato dos campos da imagem: elementos, tamanho, perigo, tipo-de-ser
+                const elementoValor = c.elementos || c.elemento || 'Desconhecido';
+                const tamanhoValor = c.tamanho || 'Médio';
+
                 card.innerHTML = `
                     ${imgHtml}
                     <div class="creature-info">
                         <div class="creature-name">${c.nome}</div>
                         <div class="creature-tags">
-                            <span class="tag" style="color: var(--accent-energia);">${c.elemento || 'Desconhecido'}</span>
-                            <span class="tag">${c.tamanho || 'Médio'}</span>
+                            <span class="tag" style="color: var(--accent-energia);">${elementoValor}</span>
+                            <span class="tag">${tamanhoValor}</span>
                         </div>
                     </div>
                 `;
@@ -561,15 +554,16 @@
             });
         }
 
-        // --- SISTEMA DE FILTROS ---
+        /* --- FILTRO ATUALIZADO --- */
         function filtrarBestiario() {
             const busca = document.getElementById("search-creature").value.toLowerCase();
             const elemento = document.getElementById("filter-elemento").value;
             const tamanho = document.getElementById("filter-tamanho").value;
 
             const filtrados = listaCriaturas.filter(c => {
+                const elementoValor = c.elementos || c.elemento || "";
                 const bateNome = c.nome ? c.nome.toLowerCase().includes(busca) : false;
-                const bateElemento = elemento === "todos" || c.elemento === elemento;
+                const bateElemento = elemento === "todos" || elementoValor.toLowerCase().includes(elemento.toLowerCase());
                 const bateTamanho = tamanho === "todos" || c.tamanho === tamanho;
 
                 return bateNome && bateElemento && bateTamanho;
@@ -578,16 +572,21 @@
             renderizarGrid(filtrados);
         }
 
-        // --- MODAL DE DETALHES ---
+        /* --- MODAL COM CAMPOS NOVOS --- */
         function abrirModal(criatura) {
             document.getElementById("modal-nome").innerText = criatura.nome;
             document.getElementById("modal-descricao").innerText = criatura.descricao || "Sem dados de arquivo registrados.";
             
+            const elementoValor = criatura.elementos || criatura.elemento || 'N/A';
+            const perigoValor = criatura.perigo || 'N/A';
+            const tipoValor = criatura['tipo-de-ser'] || 'Criatura';
+
             const tagsContainer = document.getElementById("modal-tags");
             tagsContainer.innerHTML = `
-                <span class="tag" style="color: var(--accent-energia);">${criatura.elemento || 'N/A'}</span>
+                <span class="tag" style="color: var(--accent-energia);">${elementoValor}</span>
                 <span class="tag">TAMANHO: ${criatura.tamanho || 'N/A'}</span>
-                <span class="tag">VD: ${criatura.vd || 'N/A'}</span>
+                <span class="tag">PERIGO: ${perigoValor}</span>
+                <span class="tag">${tipoValor}</span>
             `;
 
             const imgElement = document.getElementById("modal-img");
@@ -605,7 +604,6 @@
             document.getElementById("modal-criatura").classList.remove("active");
         }
 
-        // Autenticação Firebase
         auth.onAuthStateChanged((user) => {
             if (user) {
                 const cod = localStorage.getItem("agente_cod") || "DESCONHECIDO";
