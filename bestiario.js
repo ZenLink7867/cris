@@ -1,12 +1,10 @@
 let listaCriaturas = [];
 
-// Normaliza textos para busca (remove acentos e caixa alta)
 function normalizarTexto(texto) {
     if (!texto) return "";
     return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// Associa a cor do badge ao elemento
 function getClasseElemento(elementoStr) {
     const el = normalizarTexto(elementoStr);
     if (el.includes("sangue")) return "sangue";
@@ -17,20 +15,15 @@ function getClasseElemento(elementoStr) {
     return "";
 }
 
-// Alterna o painel de filtros avançados
 function toggleFiltros() {
     const painel = document.getElementById("painel-filtros");
-    if (painel) {
-        painel.classList.toggle("active");
-    }
+    if (painel) painel.classList.toggle("active");
 }
 
 /* --- CARREGAMENTO DO BANCO --- */
 function carregarBestiario() {
     const grid = document.getElementById("grid-bestiario");
-    if (grid && listaCriaturas.length === 0) {
-        grid.innerHTML = "<p style='color: var(--cris-green);'>Carregando ameaças do banco de dados...</p>";
-    }
+    if (!grid) return;
 
     db.collection("bestiario").get().then((querySnapshot) => {
         listaCriaturas = [];
@@ -40,13 +33,11 @@ function carregarBestiario() {
         renderizarGrid(listaCriaturas);
     }).catch((error) => {
         console.error("Erro ao carregar criaturas: ", error);
-        if (grid) {
-            grid.innerHTML = "<p style='color: #ff3333;'>Erro ao conectar ao banco de dados.</p>";
-        }
+        grid.innerHTML = "<p style='color: #ff3333;'>Erro ao conectar ao banco de dados.</p>";
     });
 }
 
-/* --- RENDERIZAÇÃO --- */
+/* --- RENDERIZAÇÃO DA GRID --- */
 function renderizarGrid(criaturas) {
     const grid = document.getElementById("grid-bestiario");
     if (!grid) return;
@@ -54,7 +45,7 @@ function renderizarGrid(criaturas) {
     grid.innerHTML = "";
 
     if (criaturas.length === 0) {
-        grid.innerHTML = "<p style='color: #7baf92; grid-column: 1/-1;'>Nenhuma entidade encontrada para os filtros selecionados.</p>";
+        grid.innerHTML = "<p style='color: #7baf92; grid-column: 1/-1;'>Nenhuma entidade encontrada.</p>";
         return;
     }
 
@@ -85,21 +76,20 @@ function renderizarGrid(criaturas) {
     });
 }
 
-// Obtém os valores marcados nos checkboxes de um grupo específico
-function getValoresMarcados(seletorGrupo) {
-    const checkboxes = document.querySelectorAll(seletorGrupo + ' input[type="checkbox"]:checked');
+// Captura os valores marcados por categoria usando `data-filtro`
+function getValoresMarcados(nomeFiltro) {
+    const checkboxes = document.querySelectorAll(`.filtro-grupo[data-filtro="${nomeFiltro}"] input[type="checkbox"]:checked`);
     return Array.from(checkboxes).map(cb => normalizarTexto(cb.value));
 }
 
-/* --- FILTRO MULTIPLA SELEÇÃO --- */
+/* --- FILTRO DE MÚLTIPLA SELEÇÃO --- */
 function filtrarBestiario() {
     const busca = normalizarTexto(document.getElementById("search-creature")?.value);
 
-    // Captura múltiplos selecionados para cada filtro
-    const elementosSel = getValoresMarcados('.filtro-grupo:nth-child(1)');
-    const perigosSel = getValoresMarcados('.filtro-grupo:nth-child(2)');
-    const tiposSel = getValoresMarcados('.filtro-grupo:nth-child(3)');
-    const tamanhosSel = getValoresMarcados('.filtro-grupo:nth-child(4)');
+    const elementosSel = getValoresMarcados('elementos');
+    const perigosSel = getValoresMarcados('perigo');
+    const tiposSel = getValoresMarcados('tipo');
+    const tamanhosSel = getValoresMarcados('tamanho');
 
     const filtrados = listaCriaturas.filter(c => {
         const nomeNorm = normalizarTexto(c.nome);
@@ -109,20 +99,14 @@ function filtrarBestiario() {
         const perigoNorm = normalizarTexto(c.perigo);
         const tipoNorm = normalizarTexto(c['tipo-de-ser'] || c.tipo);
 
-        // 1. Busca textual global
+        // Busca Geral
         const conteudoCompleto = `${nomeNorm} ${descNorm} ${elemNorm} ${tamanhoNorm} ${perigoNorm} ${tipoNorm}`;
         const bateBusca = busca === "" || conteudoCompleto.includes(busca);
 
-        // 2. Filtro de Elementos (OU entre marcados)
+        // Filtros Multi-seleção
         const bateElemento = elementosSel.length === 0 || elementosSel.some(el => elemNorm.includes(el));
-
-        // 3. Filtro de Perigo
         const batePerigo = perigosSel.length === 0 || perigosSel.some(p => perigoNorm.includes(p));
-
-        // 4. Filtro de Tipo de Ser
         const bateTipo = tiposSel.length === 0 || tiposSel.some(t => tipoNorm.includes(t));
-
-        // 5. Filtro de Tamanho
         const bateTamanho = tamanhosSel.length === 0 || tamanhosSel.some(tam => tamanhoNorm.includes(tam));
 
         return bateBusca && bateElemento && batePerigo && bateTipo && bateTamanho;
@@ -131,7 +115,7 @@ function filtrarBestiario() {
     renderizarGrid(filtrados);
 }
 
-/* --- MODAL --- */
+/* --- MODAL DE DETALHES --- */
 function abrirModal(criatura) {
     document.getElementById("modal-nome").innerText = criatura.nome;
     document.getElementById("modal-descricao").innerText = criatura.descricao || "Sem dados de arquivo registrados.";
@@ -164,12 +148,9 @@ function fecharModal() {
     document.getElementById("modal-criatura").classList.remove("active");
 }
 
-// Carrega automaticamente assim que o documento termina de carregar
-document.addEventListener("DOMContentLoaded", () => {
-    carregarBestiario();
-});
-
-// Executa também imediatamente caso o DOM já tenha carregado
-if (document.readyState === "complete" || document.readyState === "interactive") {
+// Carrega imediatamente ao abrir/recarregar a página
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", carregarBestiario);
+} else {
     carregarBestiario();
 }

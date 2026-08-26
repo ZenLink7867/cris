@@ -13,11 +13,11 @@
         </button>
     </div>
 
-    <!-- PAINEL DE FILTROS AVANÇADOS (MULTIPLA SELEÇÃO) -->
+    <!-- PAINEL DE FILTROS AVANÇADOS -->
     <div id="painel-filtros" class="painel-filtros">
         <div class="filtros-grid">
             <!-- ELEMENTOS -->
-            <div class="filtro-grupo">
+            <div class="filtro-grupo" data-filtro="elementos">
                 <h4>ELEMENTO</h4>
                 <label class="chk-container"><input type="checkbox" value="sangue" onchange="filtrarBestiario()"> Sangue</label>
                 <label class="chk-container"><input type="checkbox" value="morte" onchange="filtrarBestiario()"> Morte</label>
@@ -26,18 +26,18 @@
                 <label class="chk-container"><input type="checkbox" value="medo" onchange="filtrarBestiario()"> Medo</label>
             </div>
 
-            <!-- PERIGO -->
-            <div class="filtro-grupo">
-                <h4>PERIGO / VD</h4>
-                <label class="chk-container"><input type="checkbox" value="vd 20" onchange="filtrarBestiario()"> VD 20 / Inexistente</label>
-                <label class="chk-container"><input type="checkbox" value="baixo" onchange="filtrarBestiario()"> Baixo</label>
-                <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
+            <!-- PERIGO (CATEGORIAS ATUALIZADAS) -->
+            <div class="filtro-grupo" data-filtro="perigo">
+                <h4>PERIGO</h4>
                 <label class="chk-container"><input type="checkbox" value="alto" onchange="filtrarBestiario()"> Alto</label>
+                <label class="chk-container"><input type="checkbox" value="letal" onchange="filtrarBestiario()"> Letal</label>
+                <label class="chk-container"><input type="checkbox" value="critico" onchange="filtrarBestiario()"> Crítico</label>
                 <label class="chk-container"><input type="checkbox" value="extremo" onchange="filtrarBestiario()"> Extremo</label>
+                <label class="chk-container"><input type="checkbox" value="terminal" onchange="filtrarBestiario()"> Terminal</label>
             </div>
 
             <!-- TIPO DE SER -->
-            <div class="filtro-grupo">
+            <div class="filtro-grupo" data-filtro="tipo">
                 <h4>TIPO DE SER</h4>
                 <label class="chk-container"><input type="checkbox" value="criatura" onchange="filtrarBestiario()"> Criatura</label>
                 <label class="chk-container"><input type="checkbox" value="pessoa" onchange="filtrarBestiario()"> Pessoa / Cultista</label>
@@ -46,7 +46,7 @@
             </div>
 
             <!-- TAMANHO -->
-            <div class="filtro-grupo">
+            <div class="filtro-grupo" data-filtro="tamanho">
                 <h4>TAMANHO</h4>
                 <label class="chk-container"><input type="checkbox" value="pequeno" onchange="filtrarBestiario()"> Pequeno</label>
                 <label class="chk-container"><input type="checkbox" value="medio" onchange="filtrarBestiario()"> Médio</label>
@@ -59,6 +59,6 @@
 
     <!-- GRID DE CARDS -->
     <div id="grid-bestiario" class="grid-bestiario">
-        <p style="color: var(--cris-green); text-shadow: 0 0 5px var(--cris-glow);">Carregando ameaças do banco de dados...</p>
+        <p style="color: var(--cris-green);">Carregando ameaças do banco de dados...</p>
     </div>
 </div>

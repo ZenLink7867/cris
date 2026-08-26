@@ -53,7 +53,6 @@ header {
     gap: 12px;
 }
 
-/* CORREÇÃO: Aplicada a fonte Crimson Pro ao Logo */
 .system-logo {
     font-family: var(--font-body);
     font-size: 1.8rem;
@@ -197,100 +196,121 @@ header {
     letter-spacing: 1px;
 }
 
-.info-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 20px;
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
-
-.info-card h3 {
-    font-family: var(--font-body);
-    font-size: 1.3rem;
-    margin-bottom: 8px;
-    color: var(--text-primary);
-}
-
-/* Filter Bar & Busca */
-.filter-bar {
-    background: var(--bg-card);
-    padding: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    margin-bottom: 25px;
-}
-
-.search-header {
+/* Barra de Busca e Filtros */
+.search-box-container {
     display: flex;
     gap: 12px;
     align-items: flex-end;
+    margin-bottom: 20px;
 }
 
-.filter-group {
+.search-input-wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
+}
+
+.search-input-wrapper label {
     font-family: var(--font-ui);
     font-size: 0.8rem;
-}
-
-.filter-group label {
     color: var(--text-secondary);
-    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.filter-select, 
-.search-input {
+.search-input-wrapper input {
     background: var(--bg-main);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 4px;
     font-family: var(--font-ui);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     outline: none;
+    transition: border-color 0.2s;
 }
 
-.filter-select:focus, 
-.search-input:focus {
+.search-input-wrapper input:focus {
     border-color: var(--accent-energia);
+    box-shadow: 0 0 8px var(--accent-energia-glow);
 }
 
-.btn-toggle-filtros {
-    background: var(--bg-main);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 8px 14px;
+.btn-filtros-toggle {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    padding: 10px 18px !important;
     border-radius: 4px;
     cursor: pointer;
     font-family: var(--font-ui);
     font-size: 0.85rem;
-    height: 38px;
-    white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    height: 41px;
 }
 
-.btn-toggle-filtros:hover {
-    border-color: var(--accent-energia);
+.btn-filtros-toggle:hover {
+    border-color: var(--accent-energia) !important;
+    color: var(--accent-energia) !important;
+}
+
+/* Painel de Filtros Expansível (Múltipla Seleção) */
+.painel-filtros {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-energia);
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.painel-filtros.active {
+    display: block;
+}
+
+.filtros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.filtro-grupo h4 {
+    font-family: var(--font-ui);
+    color: var(--accent-energia);
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.chk-container {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.chk-container:hover {
     color: var(--text-primary);
 }
 
-.filtros-avancados {
-    display: none;
-    gap: 15px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--border-color);
+.chk-container input[type="checkbox"] {
+    appearance: auto;
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    accent-color: var(--accent-energia);
+    cursor: pointer;
 }
 
-.filtros-avancados.active {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-/* Bestiário Grid & Cards */
+/* Grid de Criaturas */
+.grid-bestiario, 
 .creatures-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -304,7 +324,6 @@ header {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    position: relative;
 }
 
 .creature-card:hover {
@@ -341,7 +360,7 @@ header {
 }
 
 .tag {
-    padding: 2px 6px;
+    padding: 3px 8px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
@@ -349,49 +368,18 @@ header {
 }
 
 /* Cores Temáticas dos Elementos Paranormais */
-.tag-elemento {
-    font-weight: 600;
-}
-
-.tag-elemento.sangue { 
-    color: #ff3b3b; 
-    border-color: rgba(255, 59, 59, 0.4); 
-    background: rgba(255, 59, 59, 0.1); 
-}
-
-.tag-elemento.morte { 
-    color: #aaaaaa; 
-    border-color: rgba(255, 255, 255, 0.2); 
-    background: #121016; 
-}
-
-.tag-elemento.energia { 
-    color: #d000df; 
-    border-color: rgba(208, 0, 223, 0.4); 
-    background: rgba(208, 0, 223, 0.1); 
-}
-
-.tag-elemento.conhecimento { 
-    color: #ffd700; 
-    border-color: rgba(255, 215, 0, 0.4); 
-    background: rgba(255, 215, 0, 0.1); 
-}
-
-.tag-elemento.medo { 
-    color: #ffffff; 
-    border-color: rgba(255, 255, 255, 0.5); 
-    background: rgba(255, 255, 255, 0.15); 
-    text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); 
-}
+.tag-elemento { font-weight: 600; }
+.tag-elemento.sangue { color: #ff3b3b; border-color: rgba(255, 59, 59, 0.4); background: rgba(255, 59, 59, 0.1); }
+.tag-elemento.morte { color: #aaaaaa; border-color: rgba(255, 255, 255, 0.2); background: #121016; }
+.tag-elemento.energia { color: #d000df; border-color: rgba(208, 0, 223, 0.4); background: rgba(208, 0, 223, 0.1); }
+.tag-elemento.conhecimento { color: #ffd700; border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.1); }
+.tag-elemento.medo { color: #ffffff; border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.15); text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); }
 
 /* Modal Overlay */
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0, 0, 0, 0.85);
     z-index: 1000;
     justify-content: center;
@@ -425,72 +413,4 @@ header {
     color: var(--accent-red);
     font-size: 1.5rem;
     cursor: pointer;
-}
-
-.search-box-container {
-    display: flex;
-    gap: 12px;
-    align-items: flex-end;
-    margin-bottom: 15px;
-}
-
-.search-input-wrapper {
-    flex: 1;
-}
-
-.btn-filtros-toggle {
-    width: auto !important;
-    padding: 12px 20px !important;
-    margin-top: 0 !important;
-    background: transparent !important;
-    border: 1px solid var(--cris-green) !important;
-    color: var(--cris-green) !important;
-    cursor: pointer;
-}
-
-.btn-filtros-toggle:hover {
-    background: rgba(0, 255, 102, 0.2) !important;
-}
-
-/* PAINEL DE FILTROS EXPANSÍVEL */
-.painel-filtros {
-    display: none;
-    background: rgba(8, 13, 10, 0.85);
-    border: 1px solid var(--cris-border);
-    border-left: 3px solid var(--cris-green);
-    padding: 15px;
-    margin-bottom: 20px;
-}
-
-.painel-filtros.active {
-    display: block;
-}
-
-.filtros-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px;
-}
-
-.filtro-grupo h4 {
-    color: var(--cris-green);
-    margin: 0 0 10px 0;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    border-bottom: 1px solid var(--cris-border);
-    padding-bottom: 4px;
-}
-
-.chk-container {
-    display: block;
-    font-size: 0.8rem;
-    color: #a3c9b4;
-    margin-bottom: 6px;
-    cursor: pointer;
-}
-
-.chk-container input[type="checkbox"] {
-    width: auto !important;
-    margin-right: 6px;
-    accent-color: var(--cris-green);
 }
