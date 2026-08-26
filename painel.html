@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S. - PAINEL OPERACIONAL</title>
+    <title>C.R.I.S.</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -30,14 +30,15 @@
             --border-color: #242936;
             --text-primary: #e1e6ed;
             --text-secondary: #8b95a5;
-            --accent-gold: #c9a054;
+            --accent-purple: #d000df;
             --accent-red: #d93838;
             --accent-cyan: #29b6f6;
             
             /* Fontes */
             --font-body: 'Inter', sans-serif;
-            --font-heading: 'Crimson Pro', 'Adobe Hebrew', serif;
-            --font-typewriter: 'Special Elite', monospace;
+            --font-heading: 'Adobe Hebrew', serif;
+            --font-typewriter: 'Crimson Pro', serif;
+            --font-typewriter2: 'Special Elite', monospace;
         }
 
         * {
@@ -246,7 +247,7 @@
     <header>
         <div class="system-branding">
             <span class="system-logo">C.R.I.S.</span>
-            <span style="color: var(--text-secondary); font-size: 0.85rem;">| CENTRAL DE RECONHECIMENTO E INTELIGÊNCIA</span>
+            <span style="color: var(--text-secondary); font-size: 0.85rem;">| CENTRAL DE RECONHECIMENTO DE IRREGULARIDADES SOBRENATURAIS</span>
         </div>
         <div class="agent-info">
             <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-gold);">CARREGANDO...</strong></span>
@@ -264,11 +265,11 @@
             </div>
 
             <div class="nav-menu">
-                <button class="nav-btn active" onclick="trocarAba('home', this)">⚙️ CENTRAL C.R.I.S.</button>
-                <button class="nav-btn" onclick="trocarAba('documentos', this)">📄 DOCUMENTOS</button>
-                <button class="nav-btn" onclick="trocarAba('mural', this)">📌 MURAL DA ORDEM</button>
-                <button class="nav-btn" onclick="trocarAba('bestiario', this)">☣️ BESTIÁRIO</button>
-                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">🎒 EQUIPAMENTOS</button>
+                <button class="nav-btn active" onclick="trocarAba('home', this)">C.R.I.S.</button>
+                <button class="nav-btn" onclick="trocarAba('documentos', this)">DOCUMENTOS</button>
+                <button class="nav-btn" onclick="trocarAba('mural', this)">MURAL DA ORDEM</button>
+                <button class="nav-btn" onclick="trocarAba('bestiario', this)">BESTIÁRIO</button>
+                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">CATÁLOGO DE EQUIPAMENTOS</button>
             </div>
         </div>
 
@@ -330,7 +331,7 @@
                 <h2 class="section-title">CATÁLOGO DE EQUIPAMENTOS</h2>
                 <div class="info-card">
                     <h3>ARSENAL & ITENS AMALDIÇOADOS</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    <p style="color: var(--text-secondary); font-family: var(--font--typewriter); font-size: 0.9rem;">
                         Consulte o inventário de proteções, armas convencionais e artefatos sob custódia da Ordem.
                     </p>
                 </div>
