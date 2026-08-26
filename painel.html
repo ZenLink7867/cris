@@ -3,42 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.R.I.S.</title>
+    <title>C.R.I.S. - Painel de Controle</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Special+Elite&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-
-    /* Importação de Fonte Local (Se você tiver os arquivos na pasta 'fonts/') */
-        @font-face {
-            font-family: 'Adobe Hebrew';
-            src: url('fonts/AdobeHebrew-Regular.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Times New Roman';
-            src: local('Times New Roman'), local('TimesNewRomanPSMT');
-        }
-
         :root {
-            --bg-main: #0a0b0d;
-            --bg-panel: #111318;
-            --bg-card: #161920;
-            --border-color: #242936;
-            --text-primary: #e1e6ed;
-            --text-secondary: #8b95a5;
-            --accent-purple: #d000df;
-            --accent-red: #d93838;
-            --accent-cyan: #29b6f6;
+            /* Tema Principal: ENERGIA (Roxo & Sigilo) */
+            --bg-main: #09060d;
+            --bg-panel: #110b1a;
+            --bg-card: #181024;
+            --border-color: #2e1a47;
+            --border-accent: #6b269e;
             
-            /* Fontes */
-            --font-body: 'Inter', sans-serif;
-            --font-heading: 'Adobe Hebrew', serif;
-            --font-typewriter: 'Crimson Pro', serif;
-            --font-typewriter2: 'Special Elite', monospace;
+            --text-primary: #ebdcf7;
+            --text-secondary: #a692ba;
+            
+            /* Destaques de Elemento */
+            --accent-energia: #d000df;
+            --accent-energia-glow: rgba(208, 0, 223, 0.35);
+            --accent-red: #d93838;
+            
+            /* Tipografia */
+            --font-body: 'Crimson Pro', serif;       /* Texto principal legível */
+            --font-stamp: 'Special Elite', monospace; /* Detalhes, badges e títulos rústicos */
+            --font-ui: 'Inter', sans-serif;           /* Elementos de interface/botões */
         }
 
         * {
@@ -51,12 +41,13 @@
             background-color: var(--bg-main);
             color: var(--text-primary);
             font-family: var(--font-body);
+            font-size: 1.1rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Topbar Moderna */
+        /* Topbar */
         header {
             background: var(--bg-panel);
             border-bottom: 1px solid var(--border-color);
@@ -64,6 +55,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .system-branding {
@@ -73,18 +65,18 @@
         }
 
         .system-logo {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            color: var(--accent-gold);
+            font-family: var(--font-stamp);
+            font-size: 1.6rem;
+            color: var(--accent-energia);
+            text-shadow: 0 0 10px var(--accent-energia-glow);
         }
 
         .agent-info {
+            font-family: var(--font-ui);
             display: flex;
             align-items: center;
             gap: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .btn-logout {
@@ -92,7 +84,7 @@
             border: 1px solid var(--accent-red);
             color: var(--accent-red);
             padding: 6px 14px;
-            font-family: var(--font-body);
+            font-family: var(--font-ui);
             font-size: 0.8rem;
             border-radius: 4px;
             cursor: pointer;
@@ -112,7 +104,7 @@
             gap: 25px;
         }
 
-        /* Sidebar Navegação */
+        /* Sidebar */
         .sidebar {
             width: 260px;
             background: var(--bg-panel);
@@ -136,7 +128,8 @@
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            border: 2px solid var(--accent-gold);
+            border: 2px solid var(--accent-energia);
+            box-shadow: 0 0 12px var(--accent-energia-glow);
             margin: 0 auto 10px;
             display: flex;
             align-items: center;
@@ -146,15 +139,15 @@
         }
 
         .clearance-tag {
+            font-family: var(--font-stamp);
             display: inline-block;
-            background: rgba(201, 160, 84, 0.15);
-            color: var(--accent-gold);
-            border: 1px solid var(--accent-gold);
-            font-size: 0.65rem;
+            background: rgba(208, 0, 223, 0.15);
+            color: var(--accent-energia);
+            border: 1px solid var(--accent-energia);
+            font-size: 0.75rem;
             padding: 3px 8px;
             border-radius: 3px;
             margin-top: 6px;
-            font-weight: 600;
         }
 
         .nav-menu {
@@ -169,8 +162,9 @@
             color: var(--text-secondary);
             padding: 12px 15px;
             text-align: left;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
@@ -183,9 +177,10 @@
 
         .nav-btn.active {
             background: var(--bg-card);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
+            border-color: var(--accent-energia);
+            color: var(--accent-energia);
             font-weight: 600;
+            box-shadow: inset 3px 0 0 var(--accent-energia);
         }
 
         /* Área de Conteúdo */
@@ -195,6 +190,7 @@
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 30px;
+            position: relative;
         }
 
         .tab-content {
@@ -206,51 +202,185 @@
         }
 
         .section-title {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            color: var(--accent-gold);
+            font-family: var(--font-stamp);
+            font-size: 1.8rem;
+            color: var(--accent-energia);
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
-        /* Cartões de Conteúdo */
         .info-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 20px;
             margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         .info-card h3 {
-            font-family: var(--font-heading);
-            font-size: 1.3rem;
+            font-family: var(--font-stamp);
+            font-size: 1.2rem;
             margin-bottom: 8px;
             color: var(--text-primary);
         }
 
-        .typewriter-text {
-            font-family: var(--font-typewriter);
-            font-size: 0.9rem;
+        /* --- ESTILOS DO BESTIÁRIO DINÂMICO --- */
+
+        /* Barra de Filtros */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: var(--bg-card);
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-family: var(--font-ui);
+            font-size: 0.8rem;
+        }
+
+        .filter-group label {
             color: var(--text-secondary);
-            line-height: 1.5;
+            text-transform: uppercase;
+        }
+
+        .filter-select, .search-input {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .filter-select:focus, .search-input:focus {
+            border-color: var(--accent-energia);
+        }
+
+        /* Grid de Criaturas */
+        .creatures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .creature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .creature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-energia);
+            box-shadow: 0 5px 15px var(--accent-energia-glow);
+        }
+
+        .creature-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .creature-info {
+            padding: 12px;
+        }
+
+        .creature-name {
+            font-family: var(--font-stamp);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .creature-tags {
+            display: flex;
+            gap: 6px;
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+        }
+
+        .tag {
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            text-transform: uppercase;
+        }
+
+        /* Modal de Detalhes da Criatura */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-body {
+            background: var(--bg-panel);
+            border: 2px solid var(--accent-energia);
+            box-shadow: 0 0 30px var(--accent-energia-glow);
+            border-radius: 8px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--accent-red);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
     </style>
 
-    <!-- Firebase Scripts -->
+    <!-- SDKs do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
     <header>
         <div class="system-branding">
             <span class="system-logo">C.R.I.S.</span>
-            <span style="color: var(--text-secondary); font-size: 0.85rem;">| CENTRAL DE RECONHECIMENTO DE IRREGULARIDADES SOBRENATURAIS</span>
+            <span style="color: var(--text-secondary); font-family: var(--font-ui); font-size: 0.8rem;">| CENTRAL DE RECONHECIMENTO DE IRREGULARIDADES SOBRENATURAIS</span>
         </div>
         <div class="agent-info">
-            <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-gold);">CARREGANDO...</strong></span>
+            <span>AGENTE: <strong id="nome-agente" style="color: var(--accent-energia);">CARREGANDO...</strong></span>
             <button class="btn-logout" onclick="fazerLogout()">DESCONECTAR</button>
         </div>
     </header>
@@ -259,48 +389,40 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="agent-card">
-                <div class="agent-avatar">🕵️</div>
-                <h3 id="card-agente-nome" style="font-family: var(--font-heading);">AGENTE</h3>
+                <div class="agent-avatar">🔮</div>
+                <h3 id="card-agente-nome" style="font-family: var(--font-stamp);">AGENTE</h3>
                 <span class="clearance-tag">NÍVEL DE ACESSO: I</span>
             </div>
 
             <div class="nav-menu">
-                <button class="nav-btn active" onclick="trocarAba('home', this)">C.R.I.S.</button>
+                <button class="nav-btn active" onclick="trocarAba('home', this)">VISÃO GERAL</button>
                 <button class="nav-btn" onclick="trocarAba('documentos', this)">DOCUMENTOS</button>
                 <button class="nav-btn" onclick="trocarAba('mural', this)">MURAL DA ORDEM</button>
                 <button class="nav-btn" onclick="trocarAba('bestiario', this)">BESTIÁRIO</button>
-                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">CATÁLOGO DE EQUIPAMENTOS</button>
+                <button class="nav-btn" onclick="trocarAba('equipamentos', this)">EQUIPAMENTOS</button>
             </div>
         </div>
 
         <!-- Área Central -->
         <div class="content-area">
             
-            <!-- Aba 1: Home/Visão Geral -->
+            <!-- Aba 1: Home -->
             <div id="home" class="tab-content active">
-                <h2 class="section-title">CENTRAL DE OPERAÇÕES C.R.I.S.</h2>
+                <h2 class="section-title">TERMINAL CENTRAL C.R.I.S.</h2>
                 <div class="info-card">
-                    <h3>SOBRE O SISTEMA</h3>
-                    <p class="typewriter-text">
-                        A C.R.I.S. (Central de Reconhecimento e Inteligência Sistêmica) é o banco de dados criptografado da Ordo Realitas. Este terminal centraliza registros de campo, arquivos sigilosos, especificações de equipamentos e análises de entidades paranormais para suporte às missões dos agentes.
-                    </p>
-                </div>
-                <div class="info-card" style="border-left: 3px solid var(--accent-gold);">
-                    <h3>STATUS DE CONEXÃO</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Sessão autenticada. Acesso concedido aos arquivos públicos e de nível I da Ordem.
+                    <h3>SISTEMA INTEGRADO DE ENERGIA</h3>
+                    <p>
+                        A C.R.I.S. (Central de Reconhecimento e Inteligência Sistêmica) opera sob a frequência do elemento de Energia. Este banco de dados armazena registros criptografados, dados de campo e relatórios táticos de entidades paranormais para consulta imediata de agentes autorizados.
                     </p>
                 </div>
             </div>
 
             <!-- Aba 2: Documentos -->
             <div id="documentos" class="tab-content">
-                <h2 class="section-title">DOCUMENTOS DA MISSÃO</h2>
+                <h2 class="section-title">ARQUIVOS SIGILOSOS</h2>
                 <div class="info-card">
-                    <h3>RELATÓRIO DE RECONHECIMENTO #001</h3>
-                    <p class="typewriter-text">
-                        Pistas recuperadas indicam oscilação na Membrana local. Recomenda-se varredura com equipamento de medição adequado antes de qualquer incursão.
-                    </p>
+                    <h3>RELATÓRIO #001 - OSCILAÇÃO DE MEMBRANA</h3>
+                    <p>Registros indicam que a Membrana na região central apresenta perturbações no elemento de Energia. Cuidado ao manusear equipamentos eletrônicos em campo.</p>
                 </div>
             </div>
 
@@ -308,21 +430,47 @@
             <div id="mural" class="tab-content">
                 <h2 class="section-title">MURAL DA ORDEM</h2>
                 <div class="info-card">
-                    <h3>AVISOS DA SUPERINTENDÊNCIA</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Lembre-se: O conhecimento é uma faca de dois gumes. Transmita informações sigilosas apenas por canais seguros.
-                    </p>
+                    <h3>AVISO DA SUPERINTENDÊNCIA</h3>
+                    <p>O conhecimento é perigoso. Nunca compartilhe suas credenciais de acesso fora dos terminais criptografados.</p>
                 </div>
             </div>
 
-            <!-- Aba 4: Bestiário -->
+            <!-- Aba 4: Bestiário (DINÂMICO) -->
             <div id="bestiario" class="tab-content">
                 <h2 class="section-title">BESTIÁRIO PARANORMAL</h2>
-                <div class="info-card">
-                    <h3>AMEAÇAS CADASTRADAS</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Selecione ou busque uma entidade para visualizar fraquezas conhecidas e registros de combate.
-                    </p>
+                
+                <!-- Barra de Filtros -->
+                <div class="filter-bar">
+                    <div class="filter-group" style="flex: 1;">
+                        <label>Buscar Entidade</label>
+                        <input type="text" id="search-creature" class="search-input" placeholder="Ex: Zumbi de Sangue..." oninput="filtrarBestiario()">
+                    </div>
+                    <div class="filter-group">
+                        <label>Elemento</label>
+                        <select id="filter-elemento" class="filter-select" onchange="filtrarBestiario()">
+                            <option value="todos">Todos</option>
+                            <option value="Energia">Energia</option>
+                            <option value="Sangue">Sangue</option>
+                            <option value="Morte">Morte</option>
+                            <option value="Conhecimento">Conhecimento</option>
+                            <option value="Medo">Medo</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tamanho</label>
+                        <select id="filter-tamanho" class="filter-select" onchange="filtrarBestiario()">
+                            <option value="todos">Todos</option>
+                            <option value="Pequeno">Pequeno</option>
+                            <option value="Médio">Médio</option>
+                            <option value="Grande">Grande</option>
+                            <option value="Enorme">Enorme</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid onde o Firebase vai injetar os cards -->
+                <div class="creatures-grid" id="grid-bestiario">
+                    <p style="color: var(--text-secondary);">Carregando ameaças do banco de dados...</p>
                 </div>
             </div>
 
@@ -330,31 +478,131 @@
             <div id="equipamentos" class="tab-content">
                 <h2 class="section-title">CATÁLOGO DE EQUIPAMENTOS</h2>
                 <div class="info-card">
-                    <h3>ARSENAL & ITENS AMALDIÇOADOS</h3>
-                    <p style="color: var(--text-secondary); font-family: var(--font--typewriter); font-size: 0.9rem;">
-                        Consulte o inventário de proteções, armas convencionais e artefatos sob custódia da Ordem.
-                    </p>
+                    <h3>ARSENAL E ARTEFATOS</h3>
+                    <p>Em breve: Consulta dinâmica ao estoque de itens amaldiçoados e equipamentos táticos.</p>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <!-- Modal para Visualizar a Criatura em Detalhes -->
+    <div class="modal-overlay" id="modal-criatura">
+        <div class="modal-body">
+            <button class="modal-close" onclick="fecharModal()">&times;</button>
+            <h2 id="modal-nome" class="section-title" style="margin-bottom: 10px;">NOME DA CRIATURA</h2>
+            <div id="modal-tags" class="creature-tags" style="margin-bottom: 20px;"></div>
+            <img id="modal-img" src="" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); margin-bottom: 15px; display: none;">
+            <div id="modal-descricao" style="line-height: 1.6; font-size: 1.1rem; color: var(--text-primary);"></div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
     <script>
-        // Função de Troca de Abas
+        // Inicializar Firestore (garanta que o Firebase já foi iniciado em app.js)
+        const db = firebase.firestore();
+        let listaCriaturas = []; // Guarda as criaturas carregadas do Firebase
+
+        // Troca de Abas
         function trocarAba(abaId, elementoBotao) {
-            // Esconde todas as abas
-            const abas = document.querySelectorAll('.tab-content');
-            abas.forEach(aba => aba.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(aba => aba.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Remove classe 'active' de todos os botões
-            const botoes = document.querySelectorAll('.nav-btn');
-            botoes.forEach(btn => btn.classList.remove('active'));
-
-            // Mostra a aba clicada e ativa o botão correspondente
             document.getElementById(abaId).classList.add('active');
             elementoBotao.classList.add('active');
+
+            // Carrega o bestiário apenas quando a aba for aberta pela 1ª vez
+            if (abaId === 'bestiario' && listaCriaturas.length === 0) {
+                carregarBestiario();
+            }
+        }
+
+        // --- LÓGICA DE BUSCA DO FIREBASE ---
+        function carregarBestiario() {
+            db.collection("bestiario").get().then((querySnapshot) => {
+                listaCriaturas = [];
+                querySnapshot.forEach((doc) => {
+                    listaCriaturas.push({ id: doc.id, ...doc.data() });
+                });
+                renderizarGrid(listaCriaturas);
+            }).catch((error) => {
+                console.error("Erro ao carregar criaturas: ", error);
+                document.getElementById("grid-bestiario").innerHTML = "<p>Erro ao conectar ao banco de dados.</p>";
+            });
+        }
+
+        function renderizarGrid(criaturas) {
+            const grid = document.getElementById("grid-bestiario");
+            grid.innerHTML = "";
+
+            if (criaturas.length === 0) {
+                grid.innerHTML = "<p style='color: var(--text-secondary); grid-column: 1/-1;'>Nenhuma entidade encontrada.</p>";
+                return;
+            }
+
+            criaturas.forEach(c => {
+                const card = document.createElement("div");
+                card.className = "creature-card";
+                card.onclick = () => abrirModal(c);
+
+                const imgHtml = c.imagem ? `<img src="${c.imagem}" class="creature-img" alt="${c.nome}">` : `<div class="creature-img" style="display:flex;align-items:center;justify-content:center;color:#444;">SEM IMAGEM</div>`;
+
+                card.innerHTML = `
+                    ${imgHtml}
+                    <div class="creature-info">
+                        <div class="creature-name">${c.nome}</div>
+                        <div class="creature-tags">
+                            <span class="tag" style="color: var(--accent-energia);">${c.elemento || 'Desconhecido'}</span>
+                            <span class="tag">${c.tamanho || 'Médio'}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SISTEMA DE FILTROS ---
+        function filtrarBestiario() {
+            const busca = document.getElementById("search-creature").value.toLowerCase();
+            const elemento = document.getElementById("filter-elemento").value;
+            const tamanho = document.getElementById("filter-tamanho").value;
+
+            const filtrados = listaCriaturas.filter(c => {
+                const bateNome = c.nome ? c.nome.toLowerCase().includes(busca) : false;
+                const bateElemento = elemento === "todos" || c.elemento === elemento;
+                const bateTamanho = tamanho === "todos" || c.tamanho === tamanho;
+
+                return bateNome && bateElemento && bateTamanho;
+            });
+
+            renderizarGrid(filtrados);
+        }
+
+        // --- MODAL DE DETALHES ---
+        function abrirModal(criatura) {
+            document.getElementById("modal-nome").innerText = criatura.nome;
+            document.getElementById("modal-descricao").innerText = criatura.descricao || "Sem dados de arquivo registrados.";
+            
+            const tagsContainer = document.getElementById("modal-tags");
+            tagsContainer.innerHTML = `
+                <span class="tag" style="color: var(--accent-energia);">${criatura.elemento || 'N/A'}</span>
+                <span class="tag">TAMANHO: ${criatura.tamanho || 'N/A'}</span>
+                <span class="tag">VD: ${criatura.vd || 'N/A'}</span>
+            `;
+
+            const imgElement = document.getElementById("modal-img");
+            if (criatura.imagem) {
+                imgElement.src = criatura.imagem;
+                imgElement.style.display = "block";
+            } else {
+                imgElement.style.display = "none";
+            }
+
+            document.getElementById("modal-criatura").classList.add("active");
+        }
+
+        function fecharModal() {
+            document.getElementById("modal-criatura").classList.remove("active");
         }
 
         // Autenticação Firebase
