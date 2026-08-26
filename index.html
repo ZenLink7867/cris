@@ -14,12 +14,11 @@
             --cris-border: #1b3d29;
         }
 
-        /* Desativa cursor padrão */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            cursor: none !important;
+        /* Desativa cursor padrão em desktops */
+        @media (pointer: fine) {
+            * {
+                cursor: none !important;
+            }
         }
 
         body {
@@ -44,6 +43,19 @@
             pointer-events: none;
             z-index: 9999;
             transform: translate(0, 0);
+            opacity: 0; /* Oculto até o primeiro movimento */
+            transition: opacity 0.2s ease;
+        }
+
+        #glitch-cursor.visible {
+            opacity: 1;
+        }
+
+        /* Desativa o cursor customizado em dispositivos móveis/touch */
+        @media (hover: none) and (pointer: coarse) {
+            #glitch-cursor {
+                display: none !important;
+            }
         }
 
         .cursor-svg {
@@ -126,7 +138,7 @@
             100% { background-position-y: 32px; }
         }
 
-        /* GLITCH VHS SUAVE (Glow + Aberração Cromática RGB sem cortar a caixa) */
+        /* GLITCH VHS SUAVE */
         @keyframes vhsGlow {
             0%, 92%, 100% {
                 filter: none;
@@ -263,7 +275,6 @@
     <!-- CURSOR CLÁSSICO DE SETA COM GLITCH -->
     <div id="glitch-cursor">
         <svg class="cursor-svg" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-            <!-- Seta de mouse padrão com traço pixelizado -->
             <path d="M1 1V21L6 16L10 23L13 21L9 14H16L1 1Z" fill="#00ff66" stroke="#000000" stroke-width="1.5"/>
         </svg>
     </div>
@@ -306,9 +317,31 @@
 
     <script>
         const cursor = document.getElementById('glitch-cursor');
+
+        function posicionarCursor(x, y) {
+            cursor.style.transform = `translate(${x}px, ${y}px)`;
+            if (!cursor.classList.contains('visible')) {
+                cursor.classList.add('visible');
+            }
+        }
+
+        // Movimento do Mouse (Desktop)
         window.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            posicionarCursor(e.clientX, e.clientY);
         });
+
+        // Eventos de Toque (Mobile/Tablet)
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                posicionarCursor(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                posicionarCursor(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
     </script>
 </body>
 </html>
