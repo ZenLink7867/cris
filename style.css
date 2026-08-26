@@ -1,0 +1,425 @@
+:root {
+    /* Tema Principal: ENERGIA (Roxo & Sigilo) */
+    --bg-main: #09060d;
+    --bg-panel: #110b1a;
+    --bg-card: #181024;
+    --border-color: #2e1a47;
+    --border-accent: #6b269e;
+
+    --text-primary: #ebdcf7;
+    --text-secondary: #a692ba;
+
+    /* Destaques */
+    --accent-energia: #d000df;
+    --accent-energia-glow: rgba(208, 0, 223, 0.35);
+    --accent-red: #d93838;
+
+    /* Tipografia */
+    --font-body: 'Crimson Pro', serif;
+    --font-stamp: 'Special Elite', monospace;
+    --font-ui: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.system-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.system-logo {
+    font-family: var(--font-stamp);
+    font-size: 1.6rem;
+    color: var(--accent-energia);
+    text-shadow: 0 0 10px var(--accent-energia-glow);
+}
+
+.agent-info {
+    font-family: var(--font-ui);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 0.85rem;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 6px 14px;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: var(--accent-red);
+    color: #fff;
+}
+
+/* Layout Main */
+.main-container {
+    display: flex;
+    flex: 1;
+    padding: 25px;
+    gap: 25px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.agent-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
+
+.agent-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-energia);
+    box-shadow: 0 0 12px var(--accent-energia-glow);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    background: #000;
+}
+
+.agent-card h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    padding: 12px 15px;
+    text-align: left;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.nav-btn.active {
+    background: var(--bg-card);
+    border-color: var(--accent-energia);
+    color: var(--accent-energia);
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--accent-energia);
+}
+
+/* Content Area */
+.content-area {
+    flex: 1;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 30px;
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.section-title {
+    font-family: var(--font-stamp);
+    font-size: 1.8rem;
+    color: var(--accent-energia);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.info-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* Filter Bar & Busca */
+.filter-bar {
+    background: var(--bg-card);
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 25px;
+}
+
+.search-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+}
+
+.filter-group label {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.filter-select, 
+.search-input {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.filter-select:focus, 
+.search-input:focus {
+    border-color: var(--accent-energia);
+}
+
+.btn-toggle-filtros {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    height: 38px;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.btn-toggle-filtros:hover {
+    border-color: var(--accent-energia);
+    color: var(--text-primary);
+}
+
+.filtros-avancados {
+    display: none;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.filtros-avancados.active {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Bestiário Grid & Cards */
+.creatures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.creature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.creature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-energia);
+    box-shadow: 0 5px 15px var(--accent-energia-glow);
+}
+
+.creature-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: #000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.creature-info {
+    padding: 12px;
+}
+
+.creature-name {
+    font-family: var(--font-stamp);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.creature-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+}
+
+.tag {
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    text-transform: uppercase;
+}
+
+/* Cores Temáticas dos Elementos Paranormais */
+.tag-elemento {
+    font-weight: 600;
+}
+
+.tag-elemento.sangue { 
+    color: #ff3b3b; 
+    border-color: rgba(255, 59, 59, 0.4); 
+    background: rgba(255, 59, 59, 0.1); 
+}
+
+.tag-elemento.morte { 
+    color: #aaaaaa; 
+    border-color: rgba(255, 255, 255, 0.2); 
+    background: #121016; 
+}
+
+.tag-elemento.energia { 
+    color: #d000df; 
+    border-color: rgba(208, 0, 223, 0.4); 
+    background: rgba(208, 0, 223, 0.1); 
+}
+
+.tag-elemento.conhecimento { 
+    color: #ffd700; 
+    border-color: rgba(255, 215, 0, 0.4); 
+    background: rgba(255, 215, 0, 0.1); 
+}
+
+.tag-elemento.medo { 
+    color: #ffffff; 
+    border-color: rgba(255, 255, 255, 0.5); 
+    background: rgba(255, 255, 255, 0.15); 
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); 
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-body {
+    background: var(--bg-panel);
+    border: 2px solid var(--accent-energia);
+    box-shadow: 0 0 30px var(--accent-energia-glow);
+    border-radius: 8px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 25px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--accent-red);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
